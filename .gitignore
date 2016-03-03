@@ -20,6 +20,8 @@ tmp/
 temp/
 www/build/
 platforms/
+plugins/
+hooks/
 $RECYCLE.BIN/
 
 .DS_Store
