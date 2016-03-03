@@ -1,0 +1,32 @@
+
+<ion-navbar *navbar>
+  <button menuToggle *ngIf="!selectedItem">
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>{{pageTitle}}</ion-title>
+</ion-navbar>
+
+<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
+
+    <ion-card style='padding: 10px 0 10px 0;'>
+      <center>
+        <ion-list>
+          <ion-list-header>
+            <ion-searchbar [hidden]="!searching" style='width: 70%; margin: auto;' [(ngModel)]="searchQuery" (input)="getUsers($event)" placeholder="Search users"></ion-searchbar>
+            <ion-list no-lines style='margin:0 0 0 0;'>
+              <ion-item *ngFor="#suggest of suggests"  (click)="userChoosen($event, suggest)">
+                 {{ suggest }}
+              </ion-item>
+            </ion-list>
+          </ion-list-header>
+
+          <ion-item *ngFor="#user of users" (click)="openProfile(user);">
+            <ion-avatar item-left> <img src="data:image/jpeg;base64,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"> </ion-avatar>
+            <h2>Valentin Marchaud</h2>
+            <h3>Student at 42</h3>
+          </ion-item>
+
+        </ion-list>
+      </center>
+    </ion-card>
+</ion-content>

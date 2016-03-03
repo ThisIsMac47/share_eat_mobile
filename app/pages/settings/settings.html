@@ -1,0 +1,65 @@
+
+<ion-navbar *navbar>
+  <button menuToggle *ngIf="!selectedItem">
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>{{pageTitle}}</ion-title>
+</ion-navbar>
+
+<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
+    
+    <ion-card>
+      <ion-list-header>
+        <center><h2 style='margin-top:5px;'>Your Profile</h2></center>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-avatar> <img style='margin: auto; max-height: 50px; max-width: 50px; border-radius: 3rem;' src="{{ profile.avatar }}"></ion-avatar>
+      </ion-item>
+
+      <form [ngFormModel]="profileForm" (submit)="onProfileUpdate()">
+        <ion-item>
+          <ion-label>Name</ion-label>
+          <ion-input ngControl="name" type="text" value="{{ profile.name }}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ion-email"></ion-icon>
+          <ion-label>Mail</ion-label>
+          <ion-input ngControl="mail" type="email" value="{{ profile.mail }}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Age</ion-label>
+          <ion-input  ngControl="age" type="number" value="{{ profile.age }}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ion-ios-telephone"></ion-icon>
+          <ion-label>Phone</ion-label>
+          <ion-input ngControl="phone" type="tel" value="{{ profile.phone }}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Job</ion-label>
+          <ion-input ngControl="job" type="text" value="#{{ profile.job }}"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ion-university"></ion-icon>
+          <ion-label>School</ion-label>
+          <ion-input ngControl="school" type="text" value="#{{ profile.school }}"></ion-input>
+        </ion-item>
+
+         <ion-item>
+          <ion-icon name="ion-document-text"></ion-icon>
+          <ion-label>Description</ion-label>
+          <ion-textarea ngControl="name" type="text" value="{{ profile.description }}"></ion-textarea>
+        </ion-item>
+        <center> <button block style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Confirm</button> </center>
+        
+       </form>
+    </ion-card>
+
+    
+</ion-content>

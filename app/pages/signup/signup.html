@@ -1,0 +1,47 @@
+
+<ion-navbar *navbar>
+  <ion-title>Signup</ion-title>
+</ion-navbar>
+
+<ion-content class="signup-page">
+
+  <ion-list>
+    <div class="logo" width="200">
+      <center> <img src="img/appicon.svg" width="200"> </center>
+    </div>
+
+    <form #signupForm="ngForm" novalidate>
+      <ion-item>
+        <ion-label floating primary>Email</ion-label>
+        <ion-input [(ngModel)]="signup.username" ngControl="username" type="text" #username="ngForm" required>
+        </ion-input>
+      </ion-item>
+      <p [hidden]="username.valid || submitted == false" danger padding-left>
+        Un mail est requis pour l'inscription.
+      </p>
+
+      <ion-item>
+        <ion-label floating primary>Mot de passe</ion-label>
+        <ion-input [(ngModel)]="signup.password" ngControl="password" type="password" #password="ngForm" required>
+        </ion-input>
+      </ion-item>
+      <p [hidden]="password.valid || submitted == false" danger padding-left>
+        Il vous faut un mot de passe pour pouvoir vous reconnecter plus tard !
+      </p>
+
+      <ion-item>
+        <ion-label floating primary>Confirmation mot de passe</ion-label>
+        <ion-input [(ngModel)]="signup.passwordconfirm" ngControl="passwordconfirm" type="password" #passwordconfirm="ngForm" required>
+        </ion-input>
+      </ion-item>
+      <p [hidden]="passwordconfirm.valid || submitted == false" danger padding-left>
+        Et confirmer votre mot de passe pour sûr de pas vous être trompez :)
+      </p>
+
+      <div padding>
+        <button (click)="onSignup(signupForm)" type="submit" primary >Inscription</button>
+      </div>
+    </form>
+  </ion-list>
+
+</ion-content>
