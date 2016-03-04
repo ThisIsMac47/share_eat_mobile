@@ -20,40 +20,40 @@
       <form [ngFormModel]="profileForm">
         <ion-item>
           <ion-label>Name</ion-label>
-          <ion-input ngControl="name" type="text" value="{{ profile.name }}" [(ngModel)]="profile.name"></ion-input>
+          <ion-input ngControl="name" type="text" value="{{ profile.name }}"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label>Mail</ion-label>
-          <ion-input ngControl="mail" type="text" value="{{ profile.mail }}" [(ngModel)]="profile.mail"></ion-input>
+          <ion-input ngControl="mail" type="text" value="{{ profile.mail }}"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label>Age</ion-label>
-          <ion-input  ngControl="age" type="text" value=0 [ng-model]="profile.age"></ion-input>
+          <ion-input  ngControl="age" type="number" value="{{ profile.age }}"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-icon name="ion-ios-telephone"></ion-icon>
           <ion-label>Phone</ion-label>
-          <ion-input ngControl="phone" type="tel" value="{{ profile.phone }}" [(ng-model)]="profile.phone"></ion-input>
+          <ion-input ngControl="phone" type="tel" value="{{ profile.phone }}"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label>Job</ion-label>
-          <ion-input ngControl="job" type="text" value="{{ profile.job }}"  [(ng-model)]="profile.job"></ion-input>
+          <ion-input ngControl="job" type="text" value="{{ profile.job }}" ></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-icon name="ion-university"></ion-icon>
           <ion-label>School</ion-label>
-          <ion-input ngControl="school" type="text" value="{{ profile.school }}" [(ng-model)]="profile.school"></ion-input>
+          <ion-input ngControl="school" type="text" value="{{ profile.school }}"></ion-input>
         </ion-item>
 
          <ion-item>
           <ion-icon name="ion-document-text"></ion-icon>
           <ion-label>Description</ion-label>
-          <ion-textarea ngControl="description" type="text" value="{{ profile.description }}" [ng-model]="profile.description"></ion-textarea>
+          <ion-textarea ngControl="description" type="text" value="{{ profile.description }}"></ion-textarea>
         </ion-item>
 
         <center> <button block (click)="onProfileUpdate()" style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Confirm</button> </center>

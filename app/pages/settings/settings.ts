@@ -27,13 +27,13 @@ export class SettingsPage {
     this.profile = new Profile(null);
 
     this.profileForm = formBuilder.group({
-            name: ["", Validators.required],
-            mail: ["", Validators.required],
-            age: ["", Validators.required],
-            phone: ["", Validators.required],
-            school: ["", Validators.required],
-            job: ["", Validators.required],
-            description: ["", Validators.required]
+            name: [this.profile.name, Validators.required],
+            mail: [this.profile.mail, Validators.required],
+            age: [this.profile.age, Validators.required],
+            phone: [this.profile.phone, Validators.required],
+            school: [this.profile.school, Validators.required],
+            job: [this.profile.job, Validators.required],
+            description: [this.profile.description, Validators.required]
     });
 
      // Get user profile if not already know
@@ -64,8 +64,6 @@ export class SettingsPage {
 
   onProfileUpdate() {
       let datas = {};
-      console.log(JSON.stringify(this.profile));
-      console.log(JSON.stringify(this.profileForm.value));
 
       if (!_.isEqual(this.profileForm.value.name, this.profile.name))
         datas['name'] = this.profileForm.value.name;
