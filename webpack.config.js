@@ -5,6 +5,7 @@ module.exports = {
   entry: [
     path.normalize('es6-shim/es6-shim.min'),
     'reflect-metadata',
+    path.normalize('lodash'),
     path.normalize('zone.js/dist/zone-microtask'),
     path.resolve('app/app')
   ],

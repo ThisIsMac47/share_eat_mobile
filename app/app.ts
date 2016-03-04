@@ -17,14 +17,15 @@ class MyApp {
 
   rootPage: any;
   pages: Array<{title: string, component: any, icon: any}>;
+  app: any;
+  menu: any;
+  events: any;
 
 
-  constructor(
-    private app: IonicApp,
-    private platform: Platform,
-    private menu: MenuController,
-    private events: Events
-  ) {
+  constructor(app: IonicApp, platform: Platform, menu: MenuController, events: Events, data: DataService) {
+    this.app = app;
+    this.menu = menu;
+    this.events = events;
 
     // set our app's pages
     this.pages = [
@@ -34,6 +35,21 @@ class MyApp {
       { title: 'Connexion', component: LoginPage, icon: 'log-in'},
     ];
 
+    // get if user is logged, go the home, if not show login page OR tutorial
+    data.get('isLogged').then((isLogged) => {
+      if (!isLogged) {
+          data.get('hasDoneTutorial').then((done) => {
+          if (!done)
+            app.getComponent('nav').setRoot(TutorialPage);
+          else
+            app.getComponent('nav').setRoot(LoginPage);
+        });
+      }
+      else {
+        app.getComponent('nav').setRoot(HomePage);
+      }
+    });
+
     // Register Events
     events.subscribe('user.login', () => {
       this.updateSideMenuItems(true);
@@ -42,6 +58,7 @@ class MyApp {
     events.subscribe('user.logout', () => {
       this.updateSideMenuItems(false);
     });
+
   }
 
   openPage(page) {

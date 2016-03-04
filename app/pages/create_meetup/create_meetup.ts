@@ -1,4 +1,4 @@
-import {Page, NavController, NavParams, Alert} from 'ionic/ionic';
+import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {SearchUserPage} from '../search_user/search_user';
 
 @Page({
@@ -6,16 +6,18 @@ import {SearchUserPage} from '../search_user/search_user';
 })
 
 export class CreateMeetupPage {
- 	constructor(nav: NavController, navParams: NavParams) {
-  		this.nav = nav;
-      this.searchQuery = "";
-    	this.pageTitle = "Create a dinner"
 
-      this.tags = [];
-      this.suggests = [];
-      this.items = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
-      this.searchTags = true;
-      this.users = [];
+  nav: any;
+  tags = [];
+  suggests = [];
+  users = [];
+  allTags = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
+  searchingTags = false;
+  searchTags = "";
+  searchbar: any;
+
+ 	constructor(nav: NavController) {
+  		this.nav = nav;
 	}
 
   getTags(searchbar) {
@@ -29,7 +31,7 @@ export class CreateMeetupPage {
     }
 
     // Suggests input who matches with the existing input
-    this.suggests = this.items.filter((v) => {
+    this.suggests = this.allTags.filter((v) => {
       if (v.toLowerCase().indexOf(res.toLowerCase()) > -1) {
         return true;
       }
@@ -46,9 +48,9 @@ export class CreateMeetupPage {
     this.searchbar.value = '';
     // update if we search more tags or not
     if (this.tags.length >= 5)
-        this.searchTags = false;
+        this.searchingTags = false;
     else
-        this.searchTags = true;
+        this.searchingTags = true;
   }
 
   searchUser() {

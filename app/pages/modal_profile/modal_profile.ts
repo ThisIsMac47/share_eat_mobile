@@ -1,17 +1,20 @@
-import {Page, Modal, NavController, ViewController} from 'ionic/ionic';
+import {Page, Modal, NavController, ViewController, NavParams} from 'ionic-angular';
 
 @Page({
   templateUrl: 'build/pages/modal_profile/modal_profile.html'
 })
 
-class ModalProfile {
+export class ModalProfile {
+  user: any;
+  view: any;
+
  constructor(viewCtrl: ViewController, params: NavParams) {
-   this.viewCtrl = viewCtrl;
+   this.view = viewCtrl;
    this.user = params.get('user');
  }
 
  dismiss() {
-   this.viewCtrl.dismiss(this.user);
+   this.view.dismiss(this.user);
  }
 
 }

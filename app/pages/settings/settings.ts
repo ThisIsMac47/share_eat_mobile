@@ -1,30 +1,29 @@
-import {Page, Modal, NavController, Alert} from 'ionic/ionic';
-import {Http, Headers, RequestOptions} from 'angular2/http';
-import {Observable}       from 'rxjs/Observable';
-import {DataService} from '../../providers/data-service';
-import {Profile} from '../../models/profile';
-import 'rxjs/Rx'
-import {isEqual} from 'lodash';
+import {Page, Modal, NavController, Alert} from 'ionic-angular';
+import * as _ from 'lodash';
 import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
 
+import {ValidationService} from '../../providers/validator-service';
+import {HttpService} from '../../providers/http-service';
+import {DataService} from '../../providers/data-service';
+import {Profile} from '../../models/profile';
+
 @Page({
-  viewBindings: [FORM_BINDINGS],
+  providers: [HttpService, ValidationService],
   templateUrl: 'build/pages/settings/settings.html'
 })
 
 export class SettingsPage {
 
   profileForm: ControlGroup;
+  http: any;
+  nav: any;
+  data: any;
+  profile = new Profile(null);
 
-  constructor(nav: NavController, data: DataService, http: Http, formBuilder: FormBuilder) {
+  constructor(nav: NavController, data: DataService, http: HttpService, formBuilder: FormBuilder) {
     this.http = http;
     this.nav = nav;
     this.data = data;
-    this.url = 'http://localhost:1337/localhost:4242';
-    this.pageTitle = "Settings";
-    this.form = {};
-
-    this.profile = new Profile(null);
 
     this.profileForm = formBuilder.group({
             name: ["", Validators.required],
@@ -37,42 +36,19 @@ export class SettingsPage {
     });
 
      // Get user profile if not already know
-     this.data.get('user.profile').then((data) => {
-        if (data) {
+     data.get('user.profile').then((data) => {
+        if (data)
           this.profile = new Profile(JSON.parse(data));
-          this.data.get('user.auth').then((data) => { this.userAuth = data; };
-        }
-        else {
-          this.data.get('user.auth').then((data) => {
-            this.userAuth = data;
+        else
             this.getUserProfile();
-          }
-        }
-     }
+     });
   }
 
   getUserProfile() {
-    let headers = new Headers({ 'Content-Type': 'application/json', "Authorization" : this.userAuth});
-    let options = new RequestOptions({ headers: headers });
-
-    this.http.get(this.url + '/me/profile', options)
-                  .toPromise()
-                  .then(response => response.json())
-                  .then((response) => this.onQuerySuccess(response),
-                   (errorMessage) => this.onQueryError(errorMessage));
-  }
-
-  showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
+    this.http.makeBackendRequest('GET', 'me/profile', null, this.onQuerySuccess, this.onQueryError, true);
   }
 
   onQuerySuccess(response) {
-    console.log(JSON.stringify(response.datas));
     this.data.set("user.profile", JSON.stringify(response.datas));
     this.profile = response.datas;
   }
@@ -86,41 +62,31 @@ export class SettingsPage {
   }
 
   onProfileUpdate() {
-      console.log("form : " + JSON.stringify(this.profileForm.value));
-
       let datas = {};
-      if (!isEqual(this.profileForm.value.name, this.profile.name)) 
+      if (!_.isEqual(this.profileForm.value.name, this.profile.name))
         datas['name'] = this.profileForm.value.name;
 
-      if (!isEqual(this.profileForm.value.mail, this.profile.mail)) 
+      if (!_.isEqual(this.profileForm.value.mail, this.profile.mail))
         datas['mail'] = this.profileForm.value.mail;
-      
-      if (!isEqual(this.profileForm.value.age, this.profile.age)) 
+
+      if (!_.isEqual(this.profileForm.value.age, this.profile.age))
         datas['age'] = this.profileForm.value.age;
 
-      if (!isEqual(this.profileForm.value.phone, this.profile.phone)) 
+      if (!_.isEqual(this.profileForm.value.phone, this.profile.phone))
         datas['phone'] = this.profileForm.value.phone;
 
-      if (!isEqual(this.profileForm.value.school, this.profile.school)) 
+      if (!_.isEqual(this.profileForm.value.school, this.profile.school))
         datas['school'] = this.profileForm.value.school;
-      
-      if (!isEqual(this.profileForm.value.job, this.profile.job)) 
+
+      if (!_.isEqual(this.profileForm.value.job, this.profile.job))
         datas['job'] = this.profileForm.value.job;
 
-      if (!isEqual(this.profileForm.value.description, this.profile.description)) 
+      if (!_.isEqual(this.profileForm.value.description, this.profile.description))
         datas['description'] = this.profileForm.value.description;
 
-      let headers = new Headers({ 'Content-Type': 'application/json', "Authorization" : this.userAuth});
-      let options = new RequestOptions({ headers: headers });
       let request = { 'datas' : datas };
-      
-      console.log("request : " + JSON.stringify(request));
 
-      this.http.post(this.url + '/me/update', JSON.stringify(request), options)
-                    .toPromise()
-                    .then(response => response.json())
-                    .then((response) => this.onUpdateSuccess(response),
-                     (errorMessage) => this.onUpdateError(errorMessage));
+      this.http.makeBackendRequest('POST', 'me/update', request, this.onUpdateSuccess, this.onUpdateError, true);
   }
 
 
@@ -135,5 +101,14 @@ export class SettingsPage {
         this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
     else if (code == "500")
         this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+  }
+
+  showAlert(title, subTitle, button) {
+    let alert = Alert.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: [button]
+    });
+    this.nav.present(alert);
   }
 }

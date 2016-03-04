@@ -3,7 +3,7 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>{{pageTitle}}</ion-title>
+  <ion-title>Search user</ion-title>
 </ion-navbar>
 
 <ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
@@ -12,7 +12,7 @@
       <center>
         <ion-list>
           <ion-list-header>
-            <ion-searchbar [hidden]="!searching" style='width: 70%; margin: auto;' [(ngModel)]="searchQuery" (input)="getUsers($event)" placeholder="Search users"></ion-searchbar>
+            <ion-searchbar [hidden]="!searching" style='width: 70%; margin: auto;' [(ngModel)]="searchbarValue" (input)="getUsers($event)" placeholder="Search users"></ion-searchbar>
             <ion-list no-lines style='margin:0 0 0 0;'>
               <ion-item *ngFor="#suggest of suggests"  (click)="userChoosen($event, suggest)">
                  {{ suggest }}

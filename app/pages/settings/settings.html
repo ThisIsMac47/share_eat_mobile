@@ -3,11 +3,11 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>{{pageTitle}}</ion-title>
+  <ion-title>Settings</ion-title>
 </ion-navbar>
 
 <ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
-    
+
     <ion-card>
       <ion-list-header>
         <center><h2 style='margin-top:5px;'>Your Profile</h2></center>
@@ -17,7 +17,7 @@
         <ion-avatar> <img style='margin: auto; max-height: 50px; max-width: 50px; border-radius: 3rem;' src="{{ profile.avatar }}"></ion-avatar>
       </ion-item>
 
-      <form [ngFormModel]="profileForm" (submit)="onProfileUpdate()">
+      <form [ngFormModel]="profileForm">
         <ion-item>
           <ion-label>Name</ion-label>
           <ion-input ngControl="name" type="text" value="{{ profile.name }}"></ion-input>
@@ -56,10 +56,10 @@
           <ion-label>Description</ion-label>
           <ion-textarea ngControl="name" type="text" value="{{ profile.description }}"></ion-textarea>
         </ion-item>
-        <center> <button block style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Confirm</button> </center>
-        
+        <center> <button block (click)="onProfileUpdate()" style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Confirm</button> </center>
        </form>
+       
     </ion-card>
 
-    
+
 </ion-content>

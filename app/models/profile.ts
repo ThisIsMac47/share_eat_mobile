@@ -1,8 +1,8 @@
-import { get, split} from 'lodash';
+import * as _ from 'lodash';
 
 export class Profile {
     name: String
-    age: Integer
+    age: Number
     phone: String
     mail: String
     avatar: String
@@ -12,14 +12,14 @@ export class Profile {
     job: String
 
     constructor(json: Object) {
-        this.name = get(json, 'name', 'Unknown');
-        this.age = get(json, 'age', 0);
-        this.phone = get(json, 'phone', 'Unknown');
-        this.mail = get(json, 'mail', 'Unknown');
-        this.school = get(json, 'school', 'Unknown');
-        this.avatar = get(json, 'avatar', '../../img/default_avatar.jpg');
-        this.description = get(json, 'description', 'Unknown');
-        this.tags = get(json, 'tags', 'Unknown').split(',');
-        this.job = get(json, 'job', 'Unknown');
+        this.name = _.get(json, 'name', 'Unknown');
+        this.age = _.get(json, 'age', 0);
+        this.phone = _.get(json, 'phone', 'Unknown');
+        this.mail = _.get(json, 'mail', 'Unknown');
+        this.school = _.get(json, 'school', 'Unknown');
+        this.avatar = _.get(json, 'avatar', '../../img/default_avatar.jpg');
+        this.description = _.get(json, 'description', 'Unknown');
+        this.tags = _.get(json, 'tags', 'Unknown').split(',');
+        this.job = _.get(json, 'job', 'Unknown');
     }
 }

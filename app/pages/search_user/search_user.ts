@@ -1,58 +1,59 @@
-import {Page, Modal, NavController, NavParams} from 'ionic/ionic';
+import {Page, Modal, NavController, NavParams, Alert} from 'ionic-angular';
 import {ModalProfile} from '../modal_profile/modal_profile';
-import {Http, Headers, RequestOptions} from 'angular2/http';
-import {Observable}       from 'rxjs/Observable';
-import {DataService} from '../../providers/data-service';
-import 'rxjs/Rx'
 
-import {SearchUserByTagRequest} from '../../models/request/SearchUserByTagRequest';
+import {DataService} from '../../providers/data-service';
+import {HttpService} from '../../providers/http-service';
 
 @Page({
+  providers: [HttpService],
   templateUrl: 'build/pages/search_user/search_user.html'
 })
 
 export class SearchUserPage {
- 	constructor(nav: NavController, data: DataService, navParams: NavParams, http: Http) {
+
+    http: any;
+    nav: any;
+    tags = [];
+    suggests = [];
+    allUsers = [];
+    searching = false;
+    searchbarValue = "";
+    searchbar: any;
+
+
+ 	constructor(nav: NavController, navParams: NavParams, http: HttpService) {
   		this.nav = nav;
       this.http = http;
-      this.data = data;
-      this.searchQuery = "";
-    	this.pageTitle = "Search user";
 
-      this.data.get('user.auth').then((data) => {
-        this.userAuth = data;
-        this.getUsersFromTags(navParams.get('tags'));
-      }
-      this.url = 'http://localhost:1337/localhost:4242';
+      this.getUsersFromTags(navParams.get('tags'));
 
-      this.suggests = [];
       this.searching = true;
 	}
 
   userChoosen(event, item) {
-
+    
   }
 
   getUsersFromTags(tags) {
-    console.log(tags);
+    let request = {'tags' : tags};
+    this.http.makeBackendRequest('POST', '/search/user/tags', null, this.onSearchSuccess, this.onSearchError, true);
+  }
 
-    let headers = new Headers({ 'Content-Type': 'application/json', "Authorization" : this.userAuth});
-    let options = new RequestOptions({ headers: headers });
+  onSearchSuccess(response) {
+    console.log(JSON.stringify(response));
+    this.allUsers = response;
+  }
 
-    SearchUserByTagRequest request = new SearchUserByTagRequest();
-    request.tags = tags;
-
-    console.log(JSON.stringify(request));
-
-    this.http.post(this.url + '/search/user/tags', JSON.stringify(request), options)
-                  .toPromise()
-                  .then(response => response.json())
-                  .then((response) => this.onSearchSuccess(response),
-                   (errorMessage) => this.onSearchError(errorMessage));
+  onSearchError(errorMessage) {
+    let code = errorMessage.status;
+    if (typeof code == "undefined")
+        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+    else if (code == "500")
+        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
   }
 
   openProfile(user) {
-    let modal = Modal.create(ModalProfile, { user : this.user } );
+    let modal = Modal.create(ModalProfile, { 'user' : user } );
     this.nav.present(modal);
     modal.onDismiss(data => {
      console.log(data);
@@ -70,7 +71,7 @@ export class SearchUserPage {
     }
 
     // Suggests input who matches with the existing input
-    this.suggests = this.items.filter((v) => {
+    this.suggests = this.allUsers.filter((v) => {
       if (v.toLowerCase().indexOf(res.toLowerCase()) > -1) {
         return true;
       }
@@ -87,16 +88,5 @@ export class SearchUserPage {
     this.nav.present(alert);
   }
 
-  onSearchSuccess(response) {
-    console.log(JSON.stringify(response));
-    this.users = response;
-  }
 
-  onLoginError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "500")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-  }
 }

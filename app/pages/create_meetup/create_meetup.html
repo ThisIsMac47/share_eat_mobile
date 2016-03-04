@@ -3,7 +3,7 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>{{pageTitle}}</ion-title>
+  <ion-title>Create meetup</ion-title>
 </ion-navbar>
 
 <ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
@@ -31,7 +31,7 @@
         </ion-list>
       </center>
 
-      <ion-searchbar [hidden]="!searchTags" style='width: 70%; margin: auto;' [(ngModel)]="searchQuery" (input)="getTags($event)" placeholder="Choose tags"></ion-searchbar>
+      <ion-searchbar [hidden]="!searchingTags" style='width: 70%; margin: auto;' [(ngModel)]="searchTags" (input)="getTags($event)" placeholder="Choose tags"></ion-searchbar>
       <ion-list no-lines style='margin:0 0 0 0;'>
         <ion-item *ngFor="#suggest of suggests"  (click)="tagsChoosen($event, suggest)">
            {{ suggest }}
