@@ -18,12 +18,13 @@ export class SettingsPage {
   http: any;
   nav: any;
   data: any;
-  profile = new Profile(null);
+  profile : any;
 
   constructor(nav: NavController, data: DataService, http: HttpService, formBuilder: FormBuilder) {
     this.http = http;
     this.nav = nav;
     this.data = data;
+    this.profile = new Profile(null);
 
     this.profileForm = formBuilder.group({
             name: ["", Validators.required],
@@ -63,6 +64,9 @@ export class SettingsPage {
 
   onProfileUpdate() {
       let datas = {};
+      console.log(JSON.stringify(this.profile));
+      console.log(JSON.stringify(this.profileForm.value));
+
       if (!_.isEqual(this.profileForm.value.name, this.profile.name))
         datas['name'] = this.profileForm.value.name;
 

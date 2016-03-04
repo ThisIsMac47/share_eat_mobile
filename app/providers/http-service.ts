@@ -1,6 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {Http, Headers, Response, RequestOptions} from 'angular2/http';
 import {Events} from 'ionic-angular';
+import 'rxjs/add/operator/map';
 import {DataService} from './data-service';
 
 @Injectable ()

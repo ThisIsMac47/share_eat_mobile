@@ -12,14 +12,14 @@ export class Profile {
     job: String
 
     constructor(json: Object) {
-        this.name = _.get(json, 'name', 'Unknown');
+        this.name = _.get(json, 'name', '');
         this.age = _.get(json, 'age', 0);
-        this.phone = _.get(json, 'phone', 'Unknown');
-        this.mail = _.get(json, 'mail', 'Unknown');
-        this.school = _.get(json, 'school', 'Unknown');
+        this.phone = _.get(json, 'phone', '');
+        this.mail = _.get(json, 'mail', '');
+        this.school = _.get(json, 'school', '');
         this.avatar = _.get(json, 'avatar', '../../img/default_avatar.jpg');
-        this.description = _.get(json, 'description', 'Unknown');
-        this.tags = _.get(json, 'tags', 'Unknown').split(',');
-        this.job = _.get(json, 'job', 'Unknown');
+        this.description = _.get(json, 'description', '');
+        this.tags = _.get(json, 'tags', '').split(',');
+        this.job = _.get(json, 'job', '');
     }
 }
