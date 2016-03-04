@@ -35,15 +35,11 @@ class MyApp {
     ];
 
     // Register Events
-    events.subscribe('user:login', () => {
+    events.subscribe('user.login', () => {
       this.updateSideMenuItems(true);
     });
 
-    events.subscribe('user:signup', () => {
-      this.updateSideMenuItems(true);
-    });
-
-    events.subscribe('user:logout', () => {
+    events.subscribe('user.logout', () => {
       this.updateSideMenuItems(false);
     });
   }
@@ -54,9 +50,7 @@ class MyApp {
     // navigate to the new page if it is not the current page
     let nav = this.app.getComponent('nav');
     if (page.title == 'Deconnexion') {
-      nav.setRoot(page.component)
-    } else {
-      nav.setRoot(page.component);
+      this.events.publish('user.logout');
     }
     nav.setRoot(page.component);
   }

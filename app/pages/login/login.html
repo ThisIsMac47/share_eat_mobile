@@ -14,15 +14,19 @@
                <ion-label>Email</ion-label>
                <input type="text" ngControl="username">
            </ion-input>
+           <p [hidden]="username.valid || submitted == false" danger padding-left>
+             You need a correct mail to login.
+           </p>
 
-           <div ngControlGroup="passwordRetry">
-               <ion-input stacked-label>
-                   <ion-label>Password</ion-label>
-                   <input type="password" ngControl="password">
-               </ion-input>
-           </div>
-
+            <ion-input stacked-label>
+               <ion-label>Password</ion-label>
+               <input type="password" ngControl="password">
+           </ion-input>
+           <p [hidden]="password.valid || submitted == false" danger padding-left>
+             You need to use a valid password.
+           </p>
        </ion-list>
+
        <ion-row responsive-sm>
          <ion-col>
            <button type="submit" primary block>Connect</button>
@@ -32,25 +36,6 @@
          </ion-col>
        </ion-row>
    </form>
-    <!--<form #loginForm="ngForm" novalidate>
-      <ion-item>
-        <ion-label floating primary>Email</ion-label>
-        <ion-input [(ngModel)]="login.username" ngControl="username" type="email" #username="ngForm" required>
-        </ion-input>
-      </ion-item>
-      <p [hidden]="username.valid || submitted == false" danger padding-left>
-        Un mail est requis pour se connecter
-      </p>
-
-      <ion-item>
-        <ion-label floating primary>Password</ion-label>
-        <ion-input [(ngModel)]="login.password" ngControl="password" type="password" #password="ngForm" required>
-        </ion-input>
-      </ion-item>
-      <p [hidden]="password.valid || submitted == false" danger padding-left>
-        Vous devez rentrez le mot de passe qui correspond au mail.
-      </p>-->
-
 
     </form>
   </ion-list>

@@ -1,11 +1,13 @@
 import {IonicApp, Page, NavController, Events, Alert} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {SignupPage} from '../signup/signup';
-import {HttpService} from '../../providers/http-service';
 import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
 
+import {HttpService} from '../../providers/http-service';
+import {ValidationService} from '../../providers/validator-service';
+
 @Page({
-  providers: [HttpService],
+  providers: [HttpService, ValidationService],
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
@@ -23,12 +25,11 @@ export class LoginPage {
     this.events = events;
     this.http = http;
 
+    // Build login form with validators
     this.loginForm = formBuilder.group({
-            username: ["", Validators.required],
-            passwordRetry: formBuilder.group({
-                password: ["", Validators.required]
-            })
-        });
+            username: ["", Validators.compose([Validators.required, ValidationService.emailValidator])],
+            password: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])]
+    });
   }
 
   onLogin() {

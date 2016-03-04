@@ -4,9 +4,11 @@ import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/com
 
 import {DataService} from '../../providers/data-service';
 import {HttpService} from '../../providers/http-service';
+import {ValidationService} from '../../providers/validator-service';
 
 
 @Page({
+  providers: [HttpService, ValidationService],
   templateUrl: 'build/pages/signup/signup.html'
 })
 export class SignupPage {
@@ -22,12 +24,13 @@ export class SignupPage {
     this.http = http;
     this.events = events;
 
+    // Build signupForm with all validators
     this.signupForm = formBuilder.group({
-            username: ["", Validators.required],
+            username: ["", Validators.compose([Validators.required, ValidationService.emailValidator])],
             passwords: formBuilder.group({
-                password: ["", Validators.required],
-                passwordconfirm: ["", Validators.required]
-            })
+                password: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])],
+                passwordconfirm: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])]
+            }, {validator: ValidationService.matchingPasswords('password', 'confirmpassword')})
         });
   }
 
@@ -35,12 +38,7 @@ export class SignupPage {
     this.submitted = true;
 
     if (this.signupForm.valid) {
-
-      if (this.signupForm.value.password !== this.signupForm.value.passwordconfirm) {
-        this.showAlert("Inscription non valide", "Les deux mot de passes  ne sont pas identiques.", "Ok");
-        return ;
-      }
-
+      // build the request
       let request = {};
       request['mail'] = this.signupForm.value.mail;
       request['password'] = this.signupForm.value.password;
