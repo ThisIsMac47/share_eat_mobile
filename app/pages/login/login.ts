@@ -1,74 +1,59 @@
 import {IonicApp, Page, NavController, Events, Alert} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {SignupPage} from '../signup/signup';
-import {DataService} from '../../providers/data-service';
-import {Http, Headers, RequestOptions} from 'angular2/http';
-import {Observable}       from 'rxjs/Observable';
-import 'rxjs/Rx'
-
-import {UserLoginRequest} from '../../models/request/UserLoginRequest';
-import {LoginMethod} from '../../models/request/UserLoginRequest';
-import {UserLoginResponse} from '../../models/response/UserLoginResponse';
+import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common';
+import {HttpService} from '../../providers/http-service';
 
 @Page({
+  viewBindings: [FORM_BINDINGS],
+  providers: [HttpService],
   templateUrl: 'build/pages/login/login.html'
 })
 export class LoginPage {
-  constructor(nav: NavController,  data: DataService, events: Events, http: Http) {
+
+  nav: any;
+  events: any;
+  http: any;
+
+  constructor(nav: NavController, events: Events, http: HttpService) {
     this.nav = nav;
-    this.data = data;
-    this.http = http;
     this.events = events;
+    this.http = http;
 
     this.login = {};
     this.submitted = false;
-    this.url = 'http://localhost:1337/localhost:4242';
   }
 
   onLogin(form) {
     this.submitted = true;
 
     if (form.valid) {
-      UserLoginRequest request;
-      request.username = form.form._value.username;
-      request.password = form.form._value.password;
-      request.accessToken = '';
-      request.loginMethod = 'STANDALONE';
+      // build the request from the form
+      let request = {};
+        request['username'] = form.form._value.username;
+        request['password'] = form.form._value.password;
+        request['accessToken'] = '';
+        request['loginMethod'] = 'STANDALONE';
 
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-
-      console.log(JSON.stringify(request));
-
-      this.http.post(this.url + '/auth/login', JSON.stringify(request), options)
-                    .toPromise()
-                    .then(response => response.json())
-                    .then((response) => this.onLoginSuccess(response),
-                     (errorMessage) => this.onLoginError(errorMessage));
+        // make the request
+        http.makeBackendRequest('POST', 'auth/login', request, onLoginSuccess, onLoginError, false);
+      }
   }
 
-    void onLoginSuccess(response) {
-      console.log(JSON.stringify(response));
-      this.data.set('isLogged', true);
-      this.data.set('user.token', response.accessToken);
-      this.data.set('user.id', response.id);
-      this.data.set('user.auth', response.id + ':' + response.accessToken);
+    onLoginSuccess(response) {
+      // publish event to update the database
+      this.events.publish('user:login', response);
 
-      this.events.publish('user:login');
-
-      let alert = Alert.create({
-        title: "Connexion réussi",
-        subTitle:  "Merci d'utiliser notre application, bon networking !",
-        buttons: [{
-            text: 'Ok',
-            handler: () => {
-              this.showAlert("Connexion réussi", "Merci d'utiliser notre application, bon networking !", button);
-            }]
+      // show alert to inform user and redirect him to Home
+      this.showAlert("Connexion réussi", "Merci d'utiliser notre application, bon networking !", {
+          text: 'Ok',
+          handler: () => {
+            this.nav.setRoot(HomePage);
+          }
       });
-      this.nav.present(alert);
-  }
+    }
 
-  void onLoginError(errorMessage) {
+  onLoginError(errorMessage) {
     let code = errorMessage.status;
     if (typeof code == "undefined")
         this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
@@ -80,7 +65,7 @@ export class LoginPage {
         this.showAlert("Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
   }
 
-  void showAlert(title, subTitle, button) {
+  showAlert(title, subTitle, button) {
     let alert = Alert.create({
       title: title,
       subTitle: subTitle,
@@ -92,8 +77,5 @@ export class LoginPage {
   onSignup() {
     this.nav.setRoot(SignupPage);
   }
-
-  onPageWillEnter() {
-    showBackButton(false);
-  }
+  
 }

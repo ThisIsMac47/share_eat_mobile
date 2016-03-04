@@ -5,8 +5,12 @@ import {LoginPage} from './pages/login/login';
 import {TutorialPage} from './pages/tutorial/tutorial';
 import {SettingsPage} from './pages/settings/settings';
 
+import {DataService} from './providers/data-service';
+import {HttpService} from './providers/http-service';
+
 @App({
   templateUrl: 'build/app.html',
+  providers: [HttpService, DataService],
   config: {} // http://ionicframework.com/docs/v2/api/config/Config/
 })
 class MyApp {
@@ -14,10 +18,12 @@ class MyApp {
   rootPage: any;
   pages: Array<{title: string, component: any, icon: any}>;
 
+
   constructor(
     private app: IonicApp,
     private platform: Platform,
-    private menu: MenuController
+    private menu: MenuController,
+    private events: Events
   ) {
 
     // set our app's pages
@@ -28,6 +34,18 @@ class MyApp {
       { title: 'Connexion', component: LoginPage, icon: 'log-in'},
     ];
 
+    // Register Events
+    events.subscribe('user:login', () => {
+      this.updateSideMenuItems(true);
+    });
+
+    events.subscribe('user:signup', () => {
+      this.updateSideMenuItems(true);
+    });
+
+    events.subscribe('user:logout', () => {
+      this.updateSideMenuItems(false);
+    });
   }
 
   openPage(page) {
@@ -35,20 +53,28 @@ class MyApp {
     this.menu.close();
     // navigate to the new page if it is not the current page
     let nav = this.app.getComponent('nav');
+    if (page.title == 'Deconnexion') {
+      nav.setRoot(page.component)
+    } else {
+      nav.setRoot(page.component);
+    }
     nav.setRoot(page.component);
   }
 
-  registerEvents() {
-    this.events.subscribe('user:login', () => {
-      this.updateSideMenuItems(true);
-    });
+  updateSideMenuItems(isLogged) {
+    if (isLogged) {
+      this.findMenuItemByTitle('Connexion').title = 'Deconnexion';
+    } else {
+      let tab = this.findMenuItemByTitle('Deconnexion');
+      if (tab) {
+          tab.title = 'Connexion';
+      }
+    }
+  }
 
-    this.events.subscribe('user:signup', () => {
-      this.updateSideMenuItems(true);
-    });
-
-    this.events.subscribe('user:logout', () => {
-      this.updateSideMenuItems(false);
-    });
+  findMenuItemByTitle(title) {
+    return this.pages.find((menuItem) => {
+      return menuItem.title === title
+    })
   }
 }
