@@ -1,4 +1,4 @@
-import {Page, NavController, NavParams} from 'ionic/ionic';
+import {Page, NavController, NavParams} from 'ionic-angular';
 import {ItemDetailsPage} from '../item-details/item-details';
 import {CreateMeetupPage} from '../create_meetup/create_meetup';
 
@@ -7,34 +7,21 @@ import {CreateMeetupPage} from '../create_meetup/create_meetup';
 })
 
 export class HomePage {
-  constructor(nav: NavController, navParams: NavParams) {
+
+  items: Array<{title: string, component: any, icon: string}>;
+  nav: any;
+
+  constructor(nav: NavController) {
   	this.nav = nav;
-    this.pageTitle = "Activity";
-  	this.icons = ['beer', 'bluetooth', 'paper-plane'];
-  	this.titles = ['create a dinner', 'calendar', 'pending invite'];
-  	this.items = [];
 
-  	for(let i = 0; i < 3; i++)
-  	{
-	  	this.items.push({
-  			icon: this.icons[i]
-  			title: this.titles[i];
-  		});
-  	}
+    this.items = [
+      { title: 'Create a dinner', component: HomePage, icon: 'beer'},
+      { title: 'calendar', component: HomePage, icon: 'bluetooth'},
+      { title: 'pending invite', component: HomePage, icon: 'paper-plane'}
+    ];
   }
-
-
+  
   itemTapped(event, item) {
-    if (item.title == this.titles[0]) {
-  	   this.nav.push(CreateMeetupPage);
-    } else if (item.title == this.titles[1]) {
-      this.nav.push(ItemDetailsPage , {
-        item : item
-      });
-    } else if (item.title == this.titles[2]) {
-      this.nav.push(ItemDetailsPage, {
-        item : item
-      });
-    }
+  	this.nav.push(item.component);
   }
 }

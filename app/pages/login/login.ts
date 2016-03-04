@@ -1,11 +1,10 @@
 import {IonicApp, Page, NavController, Events, Alert} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {SignupPage} from '../signup/signup';
-import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common';
 import {HttpService} from '../../providers/http-service';
+import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
 
 @Page({
-  viewBindings: [FORM_BINDINGS],
   providers: [HttpService],
   templateUrl: 'build/pages/login/login.html'
 })
@@ -15,29 +14,37 @@ export class LoginPage {
   events: any;
   http: any;
 
-  constructor(nav: NavController, events: Events, http: HttpService) {
+  login = {};
+  submitted = false;
+  loginForm: ControlGroup;
+
+  constructor(formBuilder: FormBuilder, nav: NavController, events: Events, http: HttpService) {
     this.nav = nav;
     this.events = events;
     this.http = http;
 
-    this.login = {};
-    this.submitted = false;
+    this.loginForm = formBuilder.group({
+            username: ["", Validators.required],
+            passwordRetry: formBuilder.group({
+                password: ["", Validators.required]
+            })
+        });
   }
 
-  onLogin(form) {
+  onLogin() {
     this.submitted = true;
 
-    if (form.valid) {
+    if (this.loginForm.valid) {
       // build the request from the form
       let request = {};
-        request['username'] = form.form._value.username;
-        request['password'] = form.form._value.password;
+        request['username'] = this.loginForm.value.username;
+        request['password'] = this.loginForm.value.password;
         request['accessToken'] = '';
         request['loginMethod'] = 'STANDALONE';
 
         // make the request
-        http.makeBackendRequest('POST', 'auth/login', request, onLoginSuccess, onLoginError, false);
-      }
+        this.http.makeBackendRequest('POST', 'auth/login', request, this.onLoginSuccess, this.onLoginError, false);
+    }
   }
 
     onLoginSuccess(response) {
@@ -77,5 +84,5 @@ export class LoginPage {
   onSignup() {
     this.nav.setRoot(SignupPage);
   }
-  
+
 }
