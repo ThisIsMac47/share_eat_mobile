@@ -1,5 +1,5 @@
 import {Page, NavController, MenuController} from 'ionic-angular';
-import {HomePage} from '../home/home';
+import {LoginPage} from '../login/login';
 
 @Page({
   templateUrl: 'build/pages/tutorial/tutorial.html'
@@ -12,6 +12,6 @@ export class TutorialPage {
     }
 
     start() {
-        this.nav.setRoot(HomePage);
+        this.nav.setRoot(LoginPage);
     }
 }

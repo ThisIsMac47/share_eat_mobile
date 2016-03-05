@@ -73,7 +73,7 @@ export class SignupPage {
         this.showAlert("Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
   }
 
-  showAlert(title, subTitle, button) {
+  private showAlert(title, subTitle, button) {
     let alert = Alert.create({
       title: title,
       subTitle: subTitle,

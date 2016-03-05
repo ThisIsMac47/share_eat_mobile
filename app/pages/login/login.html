@@ -3,33 +3,23 @@
 </ion-navbar>
 
 <ion-content>
-  <ion-list>
     <div class="logo">
-      <center> <img src="img/appicon.svg" width="200"> </center>
+      <center> <img src="img/appicon.png" width="200" height="200"> </center>
     </div>
 
-    <form [ngFormModel]="loginForm" (submit)="login()">
-       <ion-list>
-           <ion-input stacked-label>
-               <ion-label>Email</ion-label>
-               <input type="text" ngControl="username">
-           </ion-input>
-           <p [hidden]="username.valid || submitted == false" danger padding-left>
-             You need a correct mail to login.
-           </p>
-
-            <ion-input stacked-label>
-               <ion-label>Password</ion-label>
-               <input type="password" ngControl="password">
-           </ion-input>
-           <p [hidden]="password.valid || submitted == false" danger padding-left>
-             You need to use a valid password.
-           </p>
-       </ion-list>
+    <form [ngFormModel]="loginForm">
+           <ion-item>
+               <ion-label floating>Email </ion-label>
+               <ion-input type="text" ngControl="username"></ion-input>
+           </ion-item>
+            <ion-item>
+               <ion-label floating>Password </ion-label>
+               <ion-input type="password" ngControl="password"></ion-input>
+            </ion-item>
 
        <ion-row responsive-sm>
          <ion-col>
-           <button type="submit" primary block>Connect</button>
+           <button (click)="onLogin()" primary block>Connect</button>
          </ion-col>
          <ion-col>
            <button (click)="onSignup()" light block>Register</button>
@@ -37,6 +27,4 @@
        </ion-row>
    </form>
 
-    </form>
-  </ion-list>
 </ion-content>

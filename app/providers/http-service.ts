@@ -9,7 +9,7 @@ export class HttpService {
 
     http: any;
     event: any;
-    url = 'http://localhost:4242/';
+    url = 'http://localhost:1337/localhost:4242/';
     data: any;
     authToken: any;
 

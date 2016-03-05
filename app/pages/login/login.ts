@@ -48,7 +48,16 @@ export class LoginPage {
     }
   }
 
-    onLoginSuccess(response) {
+  showAlert(title, subTitle, button) {
+    let alert = Alert.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: [button]
+    });
+    this.nav.present(alert);
+  }
+
+    private onLoginSuccess(response) {
       // publish event to update the database
       this.events.publish('user:login', response);
 
@@ -61,7 +70,7 @@ export class LoginPage {
       });
     }
 
-  onLoginError(errorMessage) {
+  private onLoginError(errorMessage) {
     let code = errorMessage.status;
     if (typeof code == "undefined")
         this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
@@ -71,15 +80,6 @@ export class LoginPage {
         this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
     else if (code == "403")
         this.showAlert("Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
-  }
-
-  showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
   }
 
   onSignup() {
