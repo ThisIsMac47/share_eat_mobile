@@ -12,9 +12,9 @@ import {ValidationService} from '../../providers/validator-service';
 })
 export class LoginPage {
 
-  nav: any;
-  events: any;
-  http: any;
+  public nav: any;
+  public events: any;
+  public http: any;
 
   login = {};
   submitted = false;
@@ -42,44 +42,31 @@ export class LoginPage {
         request['password'] = this.loginForm.value.password;
         request['accessToken'] = '';
         request['loginMethod'] = 'STANDALONE';
-
         // make the request
-        this.http.makeBackendRequest('POST', 'auth/login', request, this.onLoginSuccess, this.onLoginError, false);
+        this.http.makeBackendRequest('POST', 'auth/login', request,
+        (response) => {
+          // publish event to update the database
+          this.events.publish('user.login', response);
+
+          // show alert to inform user and redirect him to Home
+          HttpService.showAlert(this.nav, "Connexion réussi", "Merci d'utiliser notre application, bon networking !", {
+              text: 'Ok',
+              handler: () => {
+                this.nav.setRoot(HomePage);
+              }
+          });
+        }, (errorMessage) => {
+          let code = errorMessage.status;
+          if (typeof code == "undefined")
+              HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+          else if (code == "404")
+              HttpService.showAlert(this.nav, "Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
+          else if (code == "502")
+              HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+          else if (code == "403")
+              HttpService.showAlert(this.nav, "Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
+        }, false);
     }
-  }
-
-  showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
-  }
-
-    private onLoginSuccess(response) {
-      // publish event to update the database
-      this.events.publish('user:login', response);
-
-      // show alert to inform user and redirect him to Home
-      this.showAlert("Connexion réussi", "Merci d'utiliser notre application, bon networking !", {
-          text: 'Ok',
-          handler: () => {
-            this.nav.setRoot(HomePage);
-          }
-      });
-    }
-
-  private onLoginError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "404")
-        this.showAlert("Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
-    else if (code == "502")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "403")
-        this.showAlert("Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
   }
 
   onSignup() {

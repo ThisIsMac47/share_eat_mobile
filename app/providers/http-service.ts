@@ -3,6 +3,7 @@ import {Http, Headers, Response, RequestOptions} from 'angular2/http';
 import {Events} from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import {DataService} from './data-service';
+import {Alert, NavController} from 'ionic-angular';
 
 @Injectable ()
 export class HttpService {
@@ -12,11 +13,13 @@ export class HttpService {
     url = 'http://localhost:1337/localhost:4242/';
     data: any;
     authToken: any;
+    nav: any;
 
-    constructor(http: Http, event:Events, data: DataService) {
+    constructor(nav: NavController, http: Http, event:Events, data: DataService) {
       this.http = http;
       this.event = event;
       this.data = data;
+      this.nav = nav;
 
       // if we get authToken, keep it or wait for a login event to retrieve it.
       data.get('user.auth').then((data) => {
@@ -63,15 +66,23 @@ export class HttpService {
 
       httpRequest.map(res => res.json()).subscribe(
         data => {
-            successCallback(data);
             console.log("response got : " + JSON.stringify(data));
+            successCallback(data);
         }, err => {
-            errorCallback(err);
             console.log("got an error : " + JSON.stringify(err));
+            errorCallback(err);
         }
       );
 
     }
 
+      static showAlert(nav: NavController, title, subTitle, button) {
+        let alert = Alert.create({
+          title: title,
+          subTitle: subTitle,
+          buttons: [button]
+        });
+        nav.present(alert);
+      }
 
 }
