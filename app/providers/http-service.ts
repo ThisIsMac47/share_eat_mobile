@@ -1,7 +1,8 @@
 import {Injectable} from 'angular2/core';
 import {Http, Headers, Response, RequestOptions} from 'angular2/http';
 import {Events} from 'ionic-angular';
-import 'rxjs/add/operator/map';
+import {Observable}       from 'rxjs/Observable';
+import 'rxjs/Rx'
 import {DataService} from './data-service';
 import {Alert, NavController} from 'ionic-angular';
 
@@ -64,15 +65,16 @@ export class HttpService {
       else if (method === 'DELETE')
         httpRequest = this.http.delete(this.url + route, JSON.stringify(request), options);
 
-      httpRequest.map(res => res.json()).subscribe(
-        data => {
-            console.log("response got : " + JSON.stringify(data));
-            successCallback(data);
-        }, err => {
-            console.log("got an error : " + JSON.stringify(err));
-            errorCallback(err);
-        }
-      );
+        httpRequest.toPromise()
+                    .then(response => response.json())
+                    .then((response) => {
+                      console.log("response got : " + JSON.stringify(response));
+                      successCallback(response);
+                    },
+                     (errorMessage) => {
+                       console.log("got an error : " + JSON.stringify(errorMessage));
+                       errorCallback(errorMessage);
+                     });
 
     }
 

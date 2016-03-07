@@ -5,47 +5,42 @@
 
 <ion-content class="signup-page">
 
-  <ion-list>
-    <div class="logo" width="200">
-      <center> <img src="img/appicon.svg" width="200"> </center>
-    </div>
+    <center> <img style='margin-top: 20px;' src="img/appicon.png" width="100" height="100"> </center>
 
     <form [ngFormModel]="signupForm" (submit)="onSignup()">
-       <ion-list>
-           <ion-input stacked-label>
-               <ion-label>Email</ion-label>
-               <input type="text" ngControl="username">
-           </ion-input>
-           <p [hidden]="username.valid || submitted == false" danger padding-left>
+           <ion-item>
+               <ion-label floating>Email</ion-label>
+               <ion-input type="text" ngControl="username" #username="ngForm"></ion-input>
+           </ion-item>
+           <p [hidden]="(username.valid || username.pristine)" danger padding-left>
              You need a valid email to register.
            </p>
 
-           <div ngControlGroup="passwords">
-               <ion-input stacked-label>
-                   <ion-label>Password</ion-label>
-                   <input type="password" ngControl="password">
-               </ion-input>
-               <p [hidden]="password.valid || submitted == false" danger padding-left>
+           <div ngControlGroup="passwords" #passwords="ngForm">
+               <ion-item >
+                   <ion-label floating>Password</ion-label>
+                   <ion-input type="password" ngControl="password" #password="ngForm"></ion-input>
+               </ion-item>
+               <p [hidden]="(password.valid || password.pristine)" danger padding-left>
                   You need to choose a password to register (minimum 8 characters).
                </p>
 
-               <ion-input stacked-label>
-                   <ion-label>Confirm Password</ion-label>
-                   <input type="password" ngControl="passwordconfirm">
-               </ion-input>
-               <p [hidden]="passwordconfirm.valid || submitted == false" danger padding-left>
-                 You need to confirm the password to register.
+               <ion-item>
+                   <ion-label floating>Confirm Password</ion-label>
+                   <ion-input type="password" ngControl="passwordconfirm" #passwordconfirm="ngForm"></ion-input>
+               </ion-item>
+               <p [hidden]="(passwordconfirm.valid || passwordconfirm.pristine)" danger padding-left>
+                 You need to use the same password as confirmation
                </p>
-               
+
            </div>
-           <p [hidden]="passwords.valid || submitted == false" danger padding-left>
+           <p [hidden]="(passwords.valid || passwords.pristine)" danger padding-left>
              Passwords must be exactly the same.
            </p>
 
-       </ion-list>
        <ion-row responsive-sm>
          <ion-col>
-           <button type="submit" primary block>Register</button>
+           <button type="submit" [disabled]="!signupForm.valid" primary block>Register</button>
          </ion-col>
        </ion-row>
    </form>

@@ -3,23 +3,26 @@
 </ion-navbar>
 
 <ion-content>
-    <div class="logo">
-      <center> <img src="img/appicon.png" width="200" height="200"> </center>
-    </div>
+      <center> <img style='margin-top: 20px;' src="img/appicon.png" width="100" height="100"> </center>
 
     <form [ngFormModel]="loginForm">
            <ion-item>
                <ion-label floating>Email </ion-label>
-               <ion-input type="text" ngControl="username"></ion-input>
+               <ion-input type="text" ngControl="username" #username="ngForm"></ion-input>
            </ion-item>
+           <p [hidden]="(username.valid || username.pristine)" danger padding-left>
+             You need a correct mail to login.
+           </p>
             <ion-item>
                <ion-label floating>Password </ion-label>
-               <ion-input type="password" ngControl="password"></ion-input>
+               <ion-input type="password" ngControl="password" #password="ngForm"></ion-input>
             </ion-item>
-
+            <p [hidden]="(password.valid || password.pristine)" danger padding-left>
+             You need to use your personnal password.
+           </p>
        <ion-row responsive-sm>
          <ion-col>
-           <button (click)="onLogin()" primary block>Connect</button>
+           <button (click)="onLogin()" [disabled]="!loginForm.valid" primary block>Connect</button>
          </ion-col>
          <ion-col>
            <button (click)="onSignup()" light block>Register</button>

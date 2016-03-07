@@ -1,4 +1,4 @@
-import {IonicApp, Page, NavController, Events, Alert} from 'ionic-angular';
+import {IonicApp, Page, NavController, Events, MenuController} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {SignupPage} from '../signup/signup';
 import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
@@ -12,15 +12,9 @@ import {ValidationService} from '../../providers/validator-service';
 })
 export class LoginPage {
 
-  public nav: any;
-  public events: any;
-  public http: any;
-
-  login = {};
-  submitted = false;
   loginForm: ControlGroup;
 
-  constructor(formBuilder: FormBuilder, nav: NavController, events: Events, http: HttpService) {
+  constructor(formBuilder: FormBuilder, public nav: NavController, public events: Events, public http: HttpService, public menu: MenuController) {
     this.nav = nav;
     this.events = events;
     this.http = http;
@@ -28,20 +22,20 @@ export class LoginPage {
     // Build login form with validators
     this.loginForm = formBuilder.group({
             username: ["", Validators.compose([Validators.required, ValidationService.emailValidator])],
-            password: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])]
+            password: ["", Validators.required]
     });
   }
 
   onLogin() {
-    this.submitted = true;
-
     if (this.loginForm.valid) {
       // build the request from the form
-      let request = {};
+        let request = {};
         request['username'] = this.loginForm.value.username;
         request['password'] = this.loginForm.value.password;
         request['accessToken'] = '';
         request['loginMethod'] = 'STANDALONE';
+
+        console.log(JSON.stringify(request));
         // make the request
         this.http.makeBackendRequest('POST', 'auth/login', request,
         (response) => {
@@ -59,18 +53,23 @@ export class LoginPage {
           let code = errorMessage.status;
           if (typeof code == "undefined")
               HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-          else if (code == "404")
+          else if (code == 404)
               HttpService.showAlert(this.nav, "Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
-          else if (code == "502")
+          else if (code == 502 || code == 500)
               HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-          else if (code == "403")
+          else if (code == 403)
               HttpService.showAlert(this.nav, "Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
         }, false);
     }
   }
 
   onSignup() {
-    this.nav.setRoot(SignupPage);
+    this.nav.push(SignupPage);
+  }
+
+  onPageDidEnter() {
+    this.menu.enable(false);
+    this.menu.swipeEnable(false);
   }
 
 }

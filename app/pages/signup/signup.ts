@@ -1,4 +1,4 @@
-import {Page, NavController, Events, Alert} from 'ionic-angular';
+import {Page, NavController, Events, MenuController} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
 
@@ -12,14 +12,10 @@ import {ValidationService} from '../../providers/validator-service';
   templateUrl: 'build/pages/signup/signup.html'
 })
 export class SignupPage {
-    nav: any;
-    events: any;
-    http: any;
 
-    submitted = false;
     signupForm: ControlGroup;
 
-  constructor(formBuilder: FormBuilder, nav: NavController, events: Events, http: HttpService) {
+  constructor(formBuilder: FormBuilder, public nav: NavController, public events: Events, public http: HttpService, public menu: MenuController) {
     this.nav = nav;
     this.http = http;
     this.events = events;
@@ -30,13 +26,11 @@ export class SignupPage {
             passwords: formBuilder.group({
                 password: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])],
                 passwordconfirm: ["", Validators.compose([Validators.required, ValidationService.passwordValidator])]
-            }, {validator: ValidationService.matchingPasswords('password', 'confirmpassword')})
+            }, ValidationService.matchingPasswords('password', 'confirmpassword'))
         });
   }
 
   onSignup() {
-    this.submitted = true;
-
     if (this.signupForm.valid) {
       // build the request
       let request = {};
@@ -44,42 +38,35 @@ export class SignupPage {
       request['password'] = this.signupForm.value.password;
 
       // make the request
-      this.http.makeBackendRequest('POST', 'auth/register', request, this.onRegisterSuccess, this.onRegisterError, false);
+      this.http.makeBackendRequest('POST', 'auth/register', request,
+      (response) => {
+        // publish event to update the database
+        this.events.publish('user.login', response);
+
+        // show alert to inform user and redirect him to Home
+        HttpService.showAlert(this.nav, "Inscription réussi", "Merci d'utiliser notre application, bon networking !", {
+            text: 'Ok',
+            handler: () => {
+              this.nav.setRoot(HomePage);
+            }
+        });
+      }, (errorMessage) => {
+        // in case of error
+        let code = errorMessage.status;
+        if (typeof code == "undefined")
+            HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez.", "Ok");
+        else if (code == 404)
+            HttpService.showAlert(this.nav, "Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
+        else if (code == 500 || code == 502)
+            HttpService.showAlert(this.nav, "Erreur interne", "Nous avons eu un problème, veuillez réessayez.", "Ok");
+        else if (code == 403)
+            HttpService.showAlert(this.nav, "Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
+      }, false);
     }
   }
 
-  onRegisterSuccess(response) {
-    // publish event to update the database
-    this.events.publish('user:login', response);
-
-    // show alert to inform user and redirect him to Home
-    this.showAlert("Connexion réussi", "Merci d'utiliser notre application, bon networking !", {
-        text: 'Ok',
-        handler: () => {
-          this.nav.setRoot(HomePage);
-        }
-    });
-  }
-
-  onRegisterError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez.", "Ok");
-    else if (code == "404")
-        this.showAlert("Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
-    else if (code == "500")
-        this.showAlert("Erreur interne", "Nous avons eu un problème, veuillez réessayez.", "Ok");
-    else if (code == "403")
-        this.showAlert("Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
-  }
-
-  private showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
-  }
-
+    onPageDidEnter() {
+      this.menu.enable(false);
+      this.menu.swipeEnable(false);
+    }
 }
