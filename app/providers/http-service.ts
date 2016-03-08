@@ -9,26 +9,21 @@ import {Alert, NavController} from 'ionic-angular';
 @Injectable ()
 export class HttpService {
 
-    http: any;
-    event: any;
     url = 'http://localhost:1337/localhost:4242/';
-    data: any;
-    authToken: any;
-    nav: any;
+    static authToken: any;
 
-    constructor(nav: NavController, http: Http, event:Events, data: DataService) {
+    constructor(public http: Http, public event:Events, public data: DataService) {
       this.http = http;
       this.event = event;
       this.data = data;
-      this.nav = nav;
 
       // if we get authToken, keep it or wait for a login event to retrieve it.
       data.get('user.auth').then((data) => {
         if (data)
-          this.authToken = data;
+          HttpService.authToken = data;
         else {
           event.subscribe('user.login', (response) => {
-              this.authToken = response["0"].id + ':' + response["0"].accessToken;
+              HttpService.authToken = response["0"].id + ':' + response["0"].accessToken;
           });
         }
       });
@@ -48,14 +43,14 @@ export class HttpService {
       let headers: any;
 
       if (authNeeded) {
-          headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken});
+          headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': HttpService.authToken});
       }
       else {
         headers = new Headers({ 'Content-Type': 'application/json'});
       }
       let options = new RequestOptions({ headers: headers });
 
-      console.log("request on : " + this.url + route);
+      console.log(method + " request on : " + this.url + route);
       if (method !== 'GET')
         console.log("content : " + JSON.stringify(request));
 
@@ -67,7 +62,7 @@ export class HttpService {
       else if (method === 'POST')
         httpRequest = this.http.post(this.url + route, JSON.stringify(request), options);
       else if (method === 'DELETE')
-        httpRequest = this.http.delete(this.url + route, JSON.stringify(request), options);
+        httpRequest = this.http.delete(this.url + route, options);
 
         httpRequest.toPromise()
                     .then(response => response.json())

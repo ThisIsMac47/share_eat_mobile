@@ -17,12 +17,9 @@ class MyApp {
 
   rootPage: any;
   pages: Array<{title: string, component: any, icon: any}>;
-  app: any;
-  menu: any;
-  events: any;
 
 
-  constructor(app: IonicApp, platform: Platform, menu: MenuController, events: Events, data: DataService) {
+  constructor(public app: IonicApp,public platform: Platform, public menu: MenuController, public events: Events, public data: DataService, public http: HttpService) {
     this.app = app;
     this.menu = menu;
     this.events = events;
@@ -46,17 +43,18 @@ class MyApp {
         });
       }
       else {
+        this.pages[3].title = "Deconnexion";
         app.getComponent('nav').setRoot(HomePage);
       }
     });
 
     // Register Events
-    events.subscribe('user.login', () => {
-      this.updateSideMenuItems(true);
+    events.subscribe('user.login', (response) => {
+      this.pages[3].title = "Deconnexion";
     });
 
     events.subscribe('user.logout', () => {
-      this.updateSideMenuItems(false);
+      this.pages[3].title = "Connexion";
     });
 
   }

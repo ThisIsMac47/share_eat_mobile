@@ -1,5 +1,6 @@
 import {Page, Modal, NavController, NavParams, Alert} from 'ionic-angular';
 import {ModalProfile} from '../modal_profile/modal_profile';
+import {Profile} from '../../models/profile';
 
 import {DataService} from '../../providers/data-service';
 import {HttpService} from '../../providers/http-service';
@@ -14,11 +15,9 @@ export class SearchUserPage {
     http: any;
     nav: any;
     tags = [];
-    suggests = [];
-    allUsers = [];
-    searching = false;
+    users = Array<Profile>();
+    allUsers = Array<Profile>();
     searchbarValue = "";
-    searchbar: any;
 
 
  	constructor(nav: NavController, navParams: NavParams, http: HttpService) {
@@ -26,30 +25,27 @@ export class SearchUserPage {
       this.http = http;
 
       this.getUsersFromTags(navParams.get('tags'));
-
-      this.searching = true;
+      this.users = this.allUsers;
 	}
 
   userChoosen(event, item) {
-    
+
   }
 
   getUsersFromTags(tags) {
     let request = {'tags' : tags};
-    this.http.makeBackendRequest('POST', '/search/user/tags', null, this.onSearchSuccess, this.onSearchError, true);
-  }
-
-  onSearchSuccess(response) {
-    console.log(JSON.stringify(response));
-    this.allUsers = response;
-  }
-
-  onSearchError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "500")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+    this.http.makeBackendRequest('POST', 'search/user/tags', request,
+    response => {
+      for(let i = 0; i < response.length; i++) {
+        this.allUsers[i] = new Profile(response[i]);
+      }
+    }, errorMessage => {
+      let code = errorMessage.status;
+      if (typeof code == "undefined")
+          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+      else if (code == "500")
+          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+    }, true);
   }
 
   openProfile(user) {
@@ -60,32 +56,21 @@ export class SearchUserPage {
    });
   }
 
-  searchUser(searchbar) {
-    this.searchbar = searchbar;
-
+  searchUser() {
     // get user input
-    let res = searchbar.value.trim();
+    let res = this.searchbarValue;
     if (res == '') {
-      this.suggests = [];
+      this.users = this.allUsers;
       return;
     }
 
     // Suggests input who matches with the existing input
-    this.suggests = this.allUsers.filter((v) => {
-      if (v.toLowerCase().indexOf(res.toLowerCase()) > -1) {
+    this.users = this.allUsers.filter((v) => {
+      if (v.name.toLowerCase().indexOf(res.toLowerCase()) > -1) {
         return true;
       }
       return false;
     })
-  }
-
-  showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
   }
 
 

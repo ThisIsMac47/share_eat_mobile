@@ -7,16 +7,15 @@ import {SearchUserPage} from '../search_user/search_user';
 
 export class CreateMeetupPage {
 
-  nav: any;
   tags = [];
   suggests = [];
-  users = [];
+  users = ["lol"];
   allTags = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
-  searchingTags = false;
+  searchingTags = true;
   searchTags = "";
   searchbar: any;
 
- 	constructor(nav: NavController) {
+ 	constructor(public nav: NavController) {
   		this.nav = nav;
 	}
 

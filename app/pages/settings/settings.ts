@@ -55,8 +55,8 @@ export class SettingsPage {
 
   getUserProfile() {
     this.http.makeBackendRequest('GET', 'me/profile', null, (response) => {
-      this.data.set("user.profile", JSON.stringify(response.datas));
-      this.profile = new Profile(response.datas);
+      this.data.set("user.profile", JSON.stringify(response));
+      this.profile = new Profile(response);
     }, errorMessage => {
       let code = errorMessage.status;
       if (typeof code == "undefined")
@@ -70,15 +70,15 @@ export class SettingsPage {
       if (!this.profileForm.valid)
         return ;
 
-      let datas = {};
-      datas['name'] = this.profile.name;
-      datas['mail'] = this.profile.mail;
-      datas['age'] = this.profile.age;
-      datas['phone'] = this.profile.phone;
-      datas['school'] = this.profile.school;
-      datas['job'] = this.profile.job;
-      datas['description'] = this.profile.description;
-      datas['avatar'] = this.profile.avatar;
+      let request = {};
+      request['name'] = this.profile.name;
+      request['mail'] = this.profile.mail;
+      request['age'] = this.profile.age;
+      request['phone'] = this.profile.phone;
+      request['school'] = this.profile.school;
+      request['job'] = this.profile.job;
+      request['description'] = this.profile.description;
+      request['avatar'] = this.profile.avatar;
 
       let tags = "";
       for(var i = 0; i < this.profile.tags.length; i++) {
@@ -86,15 +86,13 @@ export class SettingsPage {
         if (i + 1 != this.profile.tags.length)
           tags = tags + ",";
       }
-      datas['tags'] = tags;
-
-      let request = { 'datas' : datas };
+      request['tags'] = tags;
 
       this.http.makeBackendRequest('POST', 'me/update', request,
       response => {
         HttpService.showAlert(this.nav, "Success", "Your profile has been successfuly updated", "Ok");
-        this.profile = datas;
-        this.data.set("user.profile", JSON.stringify(datas));
+        this.data.set("user.profile", JSON.stringify(request));
+        this.profile = new Profile(request);
       }, errorMessage => {
         let code = errorMessage.status;
         if (typeof code == "undefined")
