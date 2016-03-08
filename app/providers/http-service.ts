@@ -27,8 +27,8 @@ export class HttpService {
         if (data)
           this.authToken = data;
         else {
-          event.subscribe('user.login', (user) => {
-              this.authToken = user.id + ':' + user.accessToken;
+          event.subscribe('user.login', (response) => {
+              this.authToken = response["0"].id + ':' + response["0"].accessToken;
           });
         }
       });
@@ -45,9 +45,13 @@ export class HttpService {
     *   authNeeded : if the Authorization header is required
     */
     makeBackendRequest(method, route, request, successCallback, errorCallback, authNeeded) {
-      let headers = new Headers({ 'Content-Type': 'application/json'});
+      let headers: any;
+
       if (authNeeded) {
-          headers['Authorization'] = this.authToken;
+          headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': this.authToken});
+      }
+      else {
+        headers = new Headers({ 'Content-Type': 'application/json'});
       }
       let options = new RequestOptions({ headers: headers });
 

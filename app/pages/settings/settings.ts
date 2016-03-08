@@ -15,12 +15,9 @@ import {Profile} from '../../models/profile';
 export class SettingsPage {
 
   profileForm: ControlGroup;
-  http: any;
-  nav: any;
-  data: any;
   profile : any;
 
-  constructor(nav: NavController, data: DataService, http: HttpService, formBuilder: FormBuilder) {
+  constructor(public nav: NavController, public data: DataService, public http: HttpService, formBuilder: FormBuilder) {
     this.http = http;
     this.nav = nav;
     this.data = data;
@@ -46,71 +43,47 @@ export class SettingsPage {
   }
 
   getUserProfile() {
-    this.http.makeBackendRequest('GET', 'me/profile', null, this.onQuerySuccess, this.onQueryError, true);
-  }
-
-  onQuerySuccess(response) {
-    this.data.set("user.profile", JSON.stringify(response.datas));
-    this.profile = response.datas;
-  }
-
-  onQueryError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "500")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+    this.http.makeBackendRequest('GET', 'me/profile', null, (response) => {
+      this.data.set("user.profile", JSON.stringify(response.datas));
+      this.profile = new Profile(response.datas);
+    }, errorMessage => {
+      let code = errorMessage.status;
+      if (typeof code == "undefined")
+          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+      else
+          HttpService.showAlert(this.nav, "Un problème est survenu", "Nous avons eu un problème dans l'execution de votre demande.", "Ok");
+    }, true);
   }
 
   onProfileUpdate() {
+      if (!this.profileForm.valid)
+        return ;
+
       let datas = {};
-
-      if (!_.isEqual(this.profileForm.value.name, this.profile.name))
-        datas['name'] = this.profileForm.value.name;
-
-      if (!_.isEqual(this.profileForm.value.mail, this.profile.mail))
-        datas['mail'] = this.profileForm.value.mail;
-
-      if (!_.isEqual(this.profileForm.value.age, this.profile.age))
-        datas['age'] = this.profileForm.value.age;
-
-      if (!_.isEqual(this.profileForm.value.phone, this.profile.phone))
-        datas['phone'] = this.profileForm.value.phone;
-
-      if (!_.isEqual(this.profileForm.value.school, this.profile.school))
-        datas['school'] = this.profileForm.value.school;
-
-      if (!_.isEqual(this.profileForm.value.job, this.profile.job))
-        datas['job'] = this.profileForm.value.job;
-
-      if (!_.isEqual(this.profileForm.value.description, this.profile.description))
-        datas['description'] = this.profileForm.value.description;
+      datas['name'] = this.profile.name;
+      datas['mail'] = this.profile.mail;
+      datas['age'] = this.profile.age;
+      datas['phone'] = this.profile.phone;
+      datas['school'] = this.profile.school;
+      datas['job'] = this.profile.job;
+      datas['description'] = this.profile.description;
+      datas['avatar'] = this.profile.avatar;
+      datas['tags'] = this.profile.tags;
 
       let request = { 'datas' : datas };
 
-      this.http.makeBackendRequest('POST', 'me/update', request, this.onUpdateSuccess, this.onUpdateError, true);
+      this.http.makeBackendRequest('POST', 'me/update', request,
+      response => {
+        HttpService.showAlert(this.nav, "Success", "Your profile has been successfuly updated", "Ok");
+        this.profile = datas;
+        this.data.set("user.profile", JSON.stringify(datas));
+      }, errorMessage => {
+        let code = errorMessage.status;
+        if (typeof code == "undefined")
+            HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+        else if (code == "500")
+            HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+      }, true);
   }
 
-
-  onUpdateSuccess(response) {
-      this.showAlert("Success", "Your profile has been successfuly updated", "Ok");
-      this.getUserProfile();
-  }
-
-  onUpdateError(errorMessage) {
-    let code = errorMessage.status;
-    if (typeof code == "undefined")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    else if (code == "500")
-        this.showAlert("Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-  }
-
-  showAlert(title, subTitle, button) {
-    let alert = Alert.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [button]
-    });
-    this.nav.present(alert);
-  }
 }

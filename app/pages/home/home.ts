@@ -1,4 +1,4 @@
-import {Page, NavController, NavParams} from 'ionic-angular';
+import {Page, NavController, NavParams, MenuController} from 'ionic-angular';
 import {ItemDetailsPage} from '../item-details/item-details';
 import {CreateMeetupPage} from '../create_meetup/create_meetup';
 
@@ -9,19 +9,24 @@ import {CreateMeetupPage} from '../create_meetup/create_meetup';
 export class HomePage {
 
   items: Array<{title: string, component: any, icon: string}>;
-  nav: any;
 
-  constructor(nav: NavController) {
+  constructor(public nav: NavController, public menu: MenuController) {
   	this.nav = nav;
 
     this.items = [
-      { title: 'Create a dinner', component: HomePage, icon: 'beer'},
+      { title: 'Create a dinner', component: CreateMeetupPage, icon: 'beer'},
       { title: 'calendar', component: HomePage, icon: 'bluetooth'},
       { title: 'pending invite', component: HomePage, icon: 'paper-plane'}
     ];
   }
-  
+
   itemTapped(event, item) {
   	this.nav.push(item.component);
   }
+
+
+    onPageDidEnter() {
+      this.menu.enable(true);
+      this.menu.swipeEnable(true);
+    }
 }

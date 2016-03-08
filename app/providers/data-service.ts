@@ -20,11 +20,11 @@ export class DataService {
     });
 
     // Register the login event (put all data needed in database)
-    events.subscribe('user.login', (user) => {
+    events.subscribe('user.login', (response) => {
       this.storage.set('isLogged', true);
-      this.storage.set('user.token', user.accessToken);
-      this.storage.set('user.id', user.id);
-      this.storage.set('user.auth', user.accessToken + ':' + user.id);
+      this.storage.set('user.token', response["0"].accessToken);
+      this.storage.set('user.id', response["0"].id);
+      this.storage.set('user.auth',response["0"].id + ':' + response["0"].accessToken);
     });
   }
 
