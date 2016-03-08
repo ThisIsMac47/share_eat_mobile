@@ -13,51 +13,61 @@
         <center><h2 style='margin-top:5px;'>Your Profile</h2></center>
       </ion-list-header>
 
-      <ion-item>
-        <ion-avatar> <img style='margin: auto; max-height: 50px; max-width: 50px; border-radius: 3rem;' src="{{ profile.avatar }}"></ion-avatar>
+      <ion-item (click)="chooseAvatar();">
+            <img  style='margin: auto; max-height: 120px; max-width: 120px; border-radius: 6rem;' src="{{ profile.avatar }}">
       </ion-item>
 
       <form [ngFormModel]="profileForm">
 
         <ion-item>
-          <ion-label>Name</ion-label>
+          <ion-label floating>Name</ion-label>
           <ion-input ngControl="name" type="text" value="{{ profile.name }}"  [(ngModel)]="profile.name"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Mail</ion-label>
+          <ion-label floating>Mail</ion-label>
           <ion-input ngControl="mail" type="text" value="{{ profile.mail }}" [(ngModel)]="profile.mail"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Age</ion-label>
+          <ion-label floating>Age</ion-label>
           <ion-input  ngControl="age" type="number" value="{{ profile.age }}" [(ngModel)]="profile.age"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-icon name="ion-ios-telephone"></ion-icon>
-          <ion-label>Phone</ion-label>
+          <ion-label floating>Phone</ion-label>
           <ion-input ngControl="phone" type="tel" value="{{ profile.phone }}" [(ngModel)]="profile.phone"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label>Job</ion-label>
+          <ion-label floating>Job</ion-label>
           <ion-input ngControl="job" type="text" value="{{ profile.job }}" [(ngModel)]="profile.job"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-icon name="ion-university"></ion-icon>
-          <ion-label>School</ion-label>
+          <ion-label floating>School</ion-label>
           <ion-input ngControl="school" type="text" value="{{ profile.school }}" [(ngModel)]="profile.school"></ion-input>
         </ion-item>
 
          <ion-item>
-          <ion-icon name="ion-document-text"></ion-icon>
-          <ion-label>Description</ion-label>
+          <ion-label floating>Description</ion-label>
           <ion-textarea ngControl="description" type="text" value="{{ profile.description }}" [(ngModel)]="profile.description"></ion-textarea>
         </ion-item>
 
-        <center> <button block (click)="onProfileUpdate()" style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Confirm</button> </center>
+          <ion-label>Tags</ion-label>
+          <center>
+          <ion-list style='padding:0 15px 5px 15px;'>
+            <button small *ngFor="#tag of profile.tags" (click)="removeTags($event, tag)"> #{{ tag }} </button>
+          </ion-list> </center>
+          <ion-searchbar [hidden]="!searchingTags" style='width: 70%; margin: auto;' [(ngModel)]="searchTags" (input)="getTags($event)" placeholder="Choose tags"></ion-searchbar>
+          <ion-list no-lines style='margin:0 0 0 0;'>
+            <ion-item *ngFor="#suggest of suggests"  (click)="tagsChoosen($event, suggest)">
+               {{ suggest }}
+            </ion-item>
+          </ion-list>
+
+        <center> <button block (click)="onProfileUpdate()" style='padding-top: 10px; padding-bottom: 10px; width: 50%;'>Update</button> </center>
        </form>
 
     </ion-card>

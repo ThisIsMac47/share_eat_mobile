@@ -16,6 +16,11 @@ export class SettingsPage {
 
   profileForm: ControlGroup;
   profile : any;
+  allTags = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
+  searchingTags = false;
+  searchTags = "";
+  searchbar: any;
+  suggests: String[];
 
   constructor(public nav: NavController, public data: DataService, public http: HttpService, formBuilder: FormBuilder) {
     this.http = http;
@@ -30,16 +35,22 @@ export class SettingsPage {
             phone: [this.profile.phone, Validators.required],
             school: [this.profile.school, Validators.required],
             job: [this.profile.job, Validators.required],
-            description: [this.profile.description, Validators.required]
+            description: [this.profile.description, Validators.required],
+            tags: [this.profile.tags, Validators.required]
     });
 
      // Get user profile if not already know
      data.get('user.profile').then((data) => {
-        if (data)
+        if (data) {
           this.profile = new Profile(JSON.parse(data));
+          if (this.profile.tags.length < 5) {
+             this.searchingTags = true;
+          }
+        }
         else
             this.getUserProfile();
      });
+
   }
 
   getUserProfile() {
@@ -68,7 +79,14 @@ export class SettingsPage {
       datas['job'] = this.profile.job;
       datas['description'] = this.profile.description;
       datas['avatar'] = this.profile.avatar;
-      datas['tags'] = this.profile.tags;
+
+      let tags = "";
+      for(var i = 0; i < this.profile.tags.length; i++) {
+        tags = tags + this.profile.tags[i];
+        if (i + 1 != this.profile.tags.length)
+          tags = tags + ",";
+      }
+      datas['tags'] = tags;
 
       let request = { 'datas' : datas };
 
@@ -84,6 +102,80 @@ export class SettingsPage {
         else if (code == "500")
             HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
       }, true);
+  }
+
+
+  getTags(searchbar) {
+    this.searchbar = searchbar;
+
+    // get user input
+    let res = searchbar.value.trim();
+    if (res == '') {
+      this.suggests = [];
+      return;
+    }
+
+    // Suggests input who matches with the existing input
+    this.suggests = this.allTags.filter((v) => {
+      if (v.toLowerCase().indexOf(res.toLowerCase()) > -1) {
+        return true;
+      }
+      return false;
+    })
+  }
+
+  tagsChoosen(event, item) {
+    // verify that the tag doesnt already exist and after push it
+    if (this.profile.tags.indexOf(item) == -1)
+      this.profile.tags.push(item);
+    // reset search bar and suggestions
+    this.suggests = [];
+    this.searchbar.value = '';
+    // update if we search more tags or not
+    if (this.profile.tags.length >= 5)
+        this.searchingTags = false;
+    else
+        this.searchingTags = true;
+  }
+
+  removeTags(event, item) {
+    let index = this.profile.tags.indexOf(item);
+    if (index != -1)
+      this.profile.tags.splice(index, 1);
+    this.data.set("user.profile", JSON.stringify(this.profile));
+
+    if (this.profile.tags.length < 5) {
+       this.searchingTags = true;
+    }
+  }
+
+  chooseAvatar() {
+    let prompt = Alert.create({
+      title: 'Change avatar',
+      message: "Choose avatar from an url",
+      inputs: [
+        {
+          name: 'url',
+          placeholder: 'http://website.com/myavatar.png'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {}
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            if (data.url.length == 0)
+              return ;
+            else
+              this.profile.avatar = data.url;
+          }
+        }
+      ]
+    });
+    this.nav.present(prompt);
   }
 
 }
