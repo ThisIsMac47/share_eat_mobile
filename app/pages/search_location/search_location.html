@@ -1,0 +1,27 @@
+
+<ion-navbar *navbar>
+  <button menuToggle *ngIf="!selectedItem">
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>Search user</ion-title>
+</ion-navbar>
+
+<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
+
+    <ion-card style='padding: 10px 0 10px 0;'>
+      <center>
+        <ion-list>
+          <ion-list-header>
+            <ion-searchbar style='width: 70%; margin: auto;' [(ngModel)]="searchbarValue" (input)="searchUser($event)" placeholder="Search user by name"></ion-searchbar>
+          </ion-list-header>
+
+          <ion-item *ngFor="#user of users" (click)="openProfile(user);">
+            <ion-avatar item-left> <img src="{{ user.avatar }}"> </ion-avatar>
+            <h2>{{ user.name }}</h2>
+            <h3>{{ user.job }}</h3>
+          </ion-item>
+
+        </ion-list>
+      </center>
+    </ion-card>
+</ion-content>

@@ -51,7 +51,22 @@
             <h3>{{ user.job }}</h3>
           </ion-item>
         </ion-list>
-        <button style='width: 50%; height: 35px;' (click)="searchUser();">Find More</button>
+        <button style='width: 50%; height: 35px;' (click)="searchUser();">Search user</button>
+      </center>
+    </ion-card>
+
+    <ion-card>
+      <center>
+        <ion-list>
+          <ion-list-header>
+            <h2>Restaurant</h2>
+          </ion-list-header>
+          <ion-item *ngIf="location != null" style='background: url({{ location.img }}) no-repeat center center fixed;'>
+            <h2>{{ location.name }}</h2> <h3> {{ location.type }}</h3></br>
+            <h4> {{ location.price }} for {{ location.mealplan }}</h4>
+          </ion-item>
+        </ion-list>
+        <button style='width: 50%; height: 35px;' (click)="searchLocation();"></button>
       </center>
     </ion-card>
 

@@ -39,6 +39,12 @@ export class SettingsPage {
             tags: [this.profile.tags, Validators.required]
     });
 
+    data.get('tags').then((data) => {
+       if (data) {
+         this.allTags = JSON.parse(data);
+       }
+    });
+
      // Get user profile if not already know
      data.get('user.profile').then((data) => {
         if (data) {

@@ -10,38 +10,28 @@ import {HttpService} from '../../providers/http-service';
   templateUrl: 'build/pages/search_user/search_user.html'
 })
 
-export class SearchUserPage {
+export class SearchLocationPage {
 
     tags = [];
     users = Array<Profile>();
     allUsers = Array<Profile>();
     searchbarValue = "";
     loading = true;
-    tmp: any;
     parent: any;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
   		this.nav = nav;
       this.http = http;
 
-      this.getUsersFromTags(navParams.get('tags'));
+      this.getLocationFromType(navParams.get('location_type'));
       this.parent = navParams.get('parent');
       this.users = this.allUsers;
 	}
 
-  getUsersFromTags(tags) {
-    let request = {'tags' : tags};
-    this.http.makeBackendRequest('POST', 'search/user/tags', request,
+  getLocationFromType(type) {
+    this.http.makeBackendRequest('POST', 'search/location/' + type, null,
     response => {
-      // for earch id, get the profile
-      for(let i = 0; i < response.length; i++) {
-        this.tmp = response[i];
-        this.http.makeBackendRequest('GET', 'profile/show/' + response[i], null, response => {
-            let profile = new Profile(response);
-            profile.id = this.tmp;
-            this.allUsers.push(profile);
-        }, errorMessage => {  }, true);
-      }
+
     }, errorMessage => {
       let code = errorMessage.status;
       if (typeof code == "undefined")

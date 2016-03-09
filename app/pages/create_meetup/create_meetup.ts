@@ -1,5 +1,7 @@
 import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {SearchUserPage} from '../search_user/search_user';
+import {HttpService} from '../../providers/http-service';
+import {DataService} from '../../providers/data-service';
 
 @Page({
   templateUrl: 'build/pages/create_meetup/create_meetup.html'
@@ -14,9 +16,17 @@ export class CreateMeetupPage {
   searchingTags = true;
   searchTags = "";
   searchbar: any;
+  location = null;
 
- 	constructor(public nav: NavController) {
+ 	constructor(public nav: NavController, public http: HttpService, public data: DataService) {
+      this.http = http;
+      this.data = data;
   		this.nav = nav;
+      data.get('tags').then((data) => {
+         if (data) {
+           this.allTags = JSON.parse(data);
+         }
+      });
 	}
 
   getTags(searchbar) {
@@ -57,6 +67,10 @@ export class CreateMeetupPage {
       this.nav.push(SearchUserPage, { tags : this.tags, parent: this});
     else
       this.showAlert("Error", "Please choose at least one tag to search other user.", "Ok");
+  }
+
+  searchLocation() {
+
   }
 
   showAlert(title, subTitle, button) {
