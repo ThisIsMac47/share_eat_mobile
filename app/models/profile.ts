@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
 export class Profile {
+    id: String
     name: String
     age: Number
     phone: String

@@ -14,7 +14,11 @@ export class ModalProfile {
  }
 
  dismiss() {
-   this.view.dismiss(this.user);
+   this.view.dismiss(false);
+ }
+
+ invit() {
+   this.view.dismiss(true);
  }
 
 }

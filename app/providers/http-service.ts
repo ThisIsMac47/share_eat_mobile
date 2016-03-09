@@ -9,7 +9,7 @@ import {Alert, NavController} from 'ionic-angular';
 @Injectable ()
 export class HttpService {
 
-    url = 'http://localhost:1337/localhost:4242/';
+    url = 'http://localhost:1337/shareeat.vmarchaud.fr:8080/';
     static authToken: any;
 
     constructor(public http: Http, public event:Events, public data: DataService) {

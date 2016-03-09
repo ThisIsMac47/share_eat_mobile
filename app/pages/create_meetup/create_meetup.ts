@@ -9,7 +9,7 @@ export class CreateMeetupPage {
 
   tags = [];
   suggests = [];
-  users = ["lol"];
+  users = [];
   allTags = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
   searchingTags = true;
   searchTags = "";
@@ -54,7 +54,7 @@ export class CreateMeetupPage {
 
   searchUser() {
     if (this.tags.length > 0)
-      this.nav.push(SearchUserPage, { tags : this.tags});
+      this.nav.push(SearchUserPage, { tags : this.tags, parent: this});
     else
       this.showAlert("Error", "Please choose at least one tag to search other user.", "Ok");
   }

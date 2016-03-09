@@ -1,5 +1,4 @@
 import {Page, NavController, NavParams, MenuController} from 'ionic-angular';
-import {ItemDetailsPage} from '../item-details/item-details';
 import {CreateMeetupPage} from '../create_meetup/create_meetup';
 
 @Page({

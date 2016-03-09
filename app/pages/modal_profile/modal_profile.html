@@ -6,6 +6,24 @@
 </ion-navbar>
 
 <ion-content padding>
-  
-  <button danger full (click)="dismiss()">Invit him</button>
+  <ion-list>
+
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{user.avatar}}">
+          </ion-avatar>
+          <h2>{{user.name}}</h2>
+          <p>{{user.job}}</p>
+        </ion-item>
+
+        <center>
+          <ion-label> </ion-label>
+          <ion-list style='padding:0 15px 5px 15px;'>
+            <button small *ngFor="#tag of user.tags"> {{ tag }} </button>
+          </ion-list>
+        </center>
+
+
+    </ion-list>
+  <button danger full (click)="invit();">Invit him</button>
 </ion-content>
