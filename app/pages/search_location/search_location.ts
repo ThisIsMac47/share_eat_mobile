@@ -7,39 +7,24 @@ import {HttpService} from '../../providers/http-service';
 
 @Page({
   providers: [HttpService],
-  templateUrl: 'build/pages/search_user/search_user.html'
+  templateUrl: 'build/pages/search_location/search_location.html'
 })
 
 export class SearchLocationPage {
 
-    tags = [];
-    users = Array<Profile>();
-    allUsers = Array<Profile>();
+
+    locations = Array<Profile>();
     searchbarValue = "";
     loading = true;
     parent: any;
+    tmp: any;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
   		this.nav = nav;
       this.http = http;
 
-      this.getLocationFromType(navParams.get('location_type'));
       this.parent = navParams.get('parent');
-      this.users = this.allUsers;
 	}
-
-  getLocationFromType(type) {
-    this.http.makeBackendRequest('POST', 'search/location/' + type, null,
-    response => {
-
-    }, errorMessage => {
-      let code = errorMessage.status;
-      if (typeof code == "undefined")
-          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-      else if (code == "500")
-          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-    }, true);
-  }
 
   openProfile(user) {
     let modal = Modal.create(ModalProfile, { 'user' : user } );
@@ -51,21 +36,26 @@ export class SearchLocationPage {
    });
   }
 
-  searchUser() {
+  searchLocation() {
     // get user input
     let res = this.searchbarValue;
-    if (res == '') {
-      this.users = this.allUsers;
-      return;
-    }
-
-    // Suggests input who matches with the existing input
-    this.users = this.allUsers.filter((v) => {
-      if (v.name.toLowerCase().indexOf(res.toLowerCase()) > -1) {
-        return true;
+    this.http.makeBackendRequest('GET', 'search/location/' + this.searchbarValue, null,
+    response => {
+      this.locations = [];
+      // for earch id, get the location
+      for(let i = 0; i < response.length; i++) {
+        this.tmp = response[i];
+        this.http.makeBackendRequest('GET', 'location/show/' + response[i], null, response => {
+            let profile = new Profile(response);
+            profile.id = this.tmp;
+            this.locations.push(profile);
+        }, errorMessage => {  }, true);
       }
-      return false;
-    })
+    }, errorMessage => {
+      let code = errorMessage.status;
+        HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+    }, true);
+
   }
 
 

@@ -3,7 +3,7 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>Create meetup</ion-title>
+  <img src="../../img/logo_blank.png" style='width: 30%; margin-left: 30%;'>
 </ion-navbar>
 
 <ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
@@ -62,11 +62,11 @@
             <h2>Restaurant</h2>
           </ion-list-header>
           <ion-item *ngIf="location != null" style='background: url({{ location.img }}) no-repeat center center fixed;'>
-            <h2>{{ location.name }}</h2> <h3> {{ location.type }}</h3></br>
+            <h2>{{ location.name }}</h2> <h3> {{ location.type }}</h3><br>
             <h4> {{ location.price }} for {{ location.mealplan }}</h4>
           </ion-item>
         </ion-list>
-        <button style='width: 50%; height: 35px;' (click)="searchLocation();"></button>
+        <button style='width: 50%; height: 35px;' (click)="searchLocation();">Search restaurant</button>
       </center>
     </ion-card>
 

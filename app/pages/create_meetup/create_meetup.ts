@@ -1,5 +1,6 @@
 import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {SearchUserPage} from '../search_user/search_user';
+import {SearchLocationPage} from '../search_location/search_location';
 import {HttpService} from '../../providers/http-service';
 import {DataService} from '../../providers/data-service';
 
@@ -70,7 +71,7 @@ export class CreateMeetupPage {
   }
 
   searchLocation() {
-
+    this.nav.push(SearchLocationPage, { parent: this});
   }
 
   showAlert(title, subTitle, button) {

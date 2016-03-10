@@ -3,18 +3,17 @@
   <button menuToggle>
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>Home</ion-title>
+  <img src="../../img/logo_blank.png" style='width: 30%; margin-left: 30%;'>
 </ion-navbar>
 
-<ion-content>
-  <div class="list">
-    <ion-list inset>
+<ion-pane style='height: 100%; background: url(../../img/background_flou.png) no-repeat center center fixed; background-size: cover;'>
+    <ion-list inset style='width: 95%; position: absolute; bottom: 0; margin-left: 2%;'>
       <ion-item *ngFor="#item of items" (click)="itemTapped($event, item)">
         <ion-icon name="{{item.icon}}" item-left></ion-icon>
+        <i class="icon {{item.icon}} balanced"></i>
         <div class="item-title" text-center>
             {{item.title}}
         </div>
       </ion-item>
     </ion-list>
-  </div>
-</ion-content>
+</ion-pane>

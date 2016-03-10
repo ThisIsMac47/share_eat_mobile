@@ -6,3 +6,57 @@
 // These are the imports which make up the design of this app.
 // By default each design mode includes these shared imports.
 // App Shared Sass variables belong in app.variables.scss.
+
+@import "../pages/search_location/search_location";
+
+.toolbar-background {
+  background: #D44B36;
+}
+
+ion-label {
+  color: #BEBEBE;
+}
+
+ion-menu {
+  background-color:#26231F;
+}
+
+ion-list-header {
+  background-color:#3C3C3B;
+}
+
+.item-input ion-label {
+  color: #BEBEBE;
+}
+
+.bar-button-default {
+  color: white;
+}
+
+.toolbar-title {
+  color: #BEBEBE;
+}
+.item {
+  background-color:#26231F;
+}
+
+ion-list[inset] .item {
+  border-bottom : 1px solid #D44B36
+}
+.toolbar-background {
+  border-bottom: 0;
+}
+
+.text-input {
+    color:#D44B36;
+}
+
+.button {
+    background-color:#26231F;
+}
+ion-list > .item:last-child, ion-list > ion-item-sliding:last-child .item {
+    border-bottom: 0;
+}
+ion-list > .item:first-child {
+  border-top: 0;
+}

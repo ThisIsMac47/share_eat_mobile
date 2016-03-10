@@ -3,23 +3,26 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-title>Search user</ion-title>
+  <img src="../../img/logo_blank.png" style='width: 30%; margin-left: 30%;'>
 </ion-navbar>
 
-<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;background-size: cover;'>
+<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed; background-size: cover;'>
 
     <ion-card style='padding: 10px 0 10px 0;'>
       <center>
         <ion-list>
           <ion-list-header>
-            <ion-searchbar style='width: 70%; margin: auto;' [(ngModel)]="searchbarValue" (input)="searchUser($event)" placeholder="Search user by name"></ion-searchbar>
+            <form>
+              <ion-searchbar style='width: 80%; margin: 0 0 0 0;' [(ngModel)]="searchbarValue" placeholder="Search a restaurant by type (exemple: chinese, italian ..)"></ion-searchbar>
+              <button small (click)="searchLocation();">Search</button>
+            </form>
           </ion-list-header>
 
-          <ion-item *ngFor="#user of users" (click)="openProfile(user);">
-            <ion-avatar item-left> <img src="{{ user.avatar }}"> </ion-avatar>
-            <h2>{{ user.name }}</h2>
-            <h3>{{ user.job }}</h3>
-          </ion-item>
+          <ion-card class="advanced-background" *ngFor="#location of locations">
+            <ion-avatar item-left> <img src="{{ location.img }}"> </ion-avatar>
+            <p class="advanced-background-title"> {{location.name}}</p>
+            <p class="advanced-background-subtitle">{{ location.description }}</p>
+          </ion-card>
 
         </ion-list>
       </center>
