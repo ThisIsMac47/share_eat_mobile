@@ -21,6 +21,10 @@ ion-menu {
   background-color:#26231F;
 }
 
+ion-card {
+  background-color:#26231F;
+}
+
 ion-list-header {
   background-color:#3C3C3B;
 }
@@ -30,7 +34,7 @@ ion-list-header {
 }
 
 .bar-button-default {
-  color: white;
+  color: #BEBEBE;
 }
 
 .toolbar-title {
@@ -54,6 +58,10 @@ ion-list[inset] .item {
 .button {
     background-color:#26231F;
 }
+.button-inner{
+    color:#D44B36;
+}
+
 ion-list > .item:last-child, ion-list > ion-item-sliding:last-child .item {
     border-bottom: 0;
 }

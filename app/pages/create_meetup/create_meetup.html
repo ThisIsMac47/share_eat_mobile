@@ -51,7 +51,7 @@
             <h3>{{ user.job }}</h3>
           </ion-item>
         </ion-list>
-        <button style='width: 50%; height: 35px;' (click)="searchUser();">Search user</button>
+        <button round style='width: 50%; height: 35px;' (click)="searchUser();">Search user</button>
       </center>
     </ion-card>
 
@@ -61,14 +61,15 @@
           <ion-list-header>
             <h2>Restaurant</h2>
           </ion-list-header>
-          <ion-item *ngIf="location != null" style='background: url({{ location.img }}) no-repeat center center fixed;'>
-            <h2>{{ location.name }}</h2> <h3> {{ location.type }}</h3><br>
-            <h4> {{ location.price }} for {{ location.mealplan }}</h4>
-          </ion-item>
+          <ion-card *ngIf="location != null" style='margin: 0 0 0 0;' class="advanced-background">
+            <img style='max-height:150px;' src="{{ location.img }}">
+            <p class="advanced-background-title"> {{location.name}}</p>
+            <p class="advanced-background-subtitle">{{ location.description }}</p>
+          </ion-card>
         </ion-list>
-        <button style='width: 50%; height: 35px;' (click)="searchLocation();">Search restaurant</button>
+        <button round style='width: 50%; height: 35px;' (click)="searchLocation();">Search restaurant</button>
       </center>
     </ion-card>
 
-    <center> <button block style='padding-top: 15px; padding-bottom: 15px; width: 50%;'> Confirm</button> </center>
+    <center> <button round block style='padding-top: 15px; padding-bottom: 15px; width: 50%;'> Confirm</button> </center>
 </ion-content>

@@ -7,24 +7,24 @@
 </ion-navbar>
 
 <ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed; background-size: cover;'>
-
-    <ion-card style='padding: 10px 0 10px 0;'>
-      <center>
-        <ion-list>
-          <ion-list-header>
-            <form>
-              <ion-searchbar style='width: 80%; margin: 0 0 0 0;' [(ngModel)]="searchbarValue" placeholder="Search a restaurant by type (exemple: chinese, italian ..)"></ion-searchbar>
-              <button small (click)="searchLocation();">Search</button>
-            </form>
-          </ion-list-header>
-
-          <ion-card class="advanced-background" *ngFor="#location of locations">
-            <ion-avatar item-left> <img src="{{ location.img }}"> </ion-avatar>
+          <ion-pane>
+              <div style='marggin-bottom: 30px;' >
+                <ion-searchbar [(ngModel)]="searchbarValue" placeholder="restaurant type (exemple: chinese ..)" cancelButtonText="Search" (cancel)="searchLocation($event)">></ion-searchbar>
+              </div>
+              <center style='margin-top: 10px; margin-bottom: 15px;'>
+                <button [ngClass]="{active: price == 35}" style='width: 28%;' (click)="price=35;">35€</button>
+                <button [ngClass]="{active: price == 45}" style='width: 28%;' (click)="price=45;">45€</button>
+                <button [ngClass]="{active: price == 55}" style='width: 28%;' (click)="price=55;">55€</button>
+              </center>
+          </ion-pane>
+          <ion-card style='margin: 0 0 0 0;' class="advanced-background" *ngFor="#location of locations">
+            <img style='max-height:150px;' src="{{ location.img }}">
             <p class="advanced-background-title"> {{location.name}}</p>
             <p class="advanced-background-subtitle">{{ location.description }}</p>
+
+            <button (click)="chooseLocation(location);" fab fab-top fab-right style='border-radius: 30px; max-width: 35px; max-height: 35px; background-color: #D44B36;'>
+              <ion-icon name='add'></ion-icon>
+            </button>
           </ion-card>
 
-        </ion-list>
-      </center>
-    </ion-card>
 </ion-content>

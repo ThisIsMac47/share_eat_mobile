@@ -18,6 +18,7 @@ export class SearchLocationPage {
     loading = true;
     parent: any;
     tmp: any;
+    price = null;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
   		this.nav = nav;
@@ -26,29 +27,26 @@ export class SearchLocationPage {
       this.parent = navParams.get('parent');
 	}
 
-  openProfile(user) {
-    let modal = Modal.create(ModalProfile, { 'user' : user } );
-    this.nav.present(modal);
-    modal.onDismiss(result => {
-      if (result) {
-        this.parent.users.push(user);
-      }
-   });
+  chooseLocation(location) {
+    this.parent.location = location;
+    this.nav.pop();
   }
 
-  searchLocation() {
+  searchLocation(event) {
     // get user input
     let res = this.searchbarValue;
-    this.http.makeBackendRequest('GET', 'search/location/' + this.searchbarValue, null,
+    if (res.length == 0)
+        res = "none";
+    this.http.makeBackendRequest('GET', 'search/location/' + this.price + '/' + res, null,
     response => {
       this.locations = [];
       // for earch id, get the location
       for(let i = 0; i < response.length; i++) {
         this.tmp = response[i];
         this.http.makeBackendRequest('GET', 'location/show/' + response[i], null, response => {
-            let profile = new Profile(response);
-            profile.id = this.tmp;
-            this.locations.push(profile);
+            let location = response;
+            location.id = this.tmp;
+            this.locations.push(location);
         }, errorMessage => {  }, true);
       }
     }, errorMessage => {
