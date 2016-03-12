@@ -17,8 +17,12 @@ ion-label {
   color: #BEBEBE;
 }
 
+ion-content {
+  background-color:#26231F !important;
+}
+
 ion-menu {
-  background-color:#26231F;
+  background-color:#26231F !important;
 }
 
 ion-card {
@@ -34,14 +38,21 @@ ion-list-header {
 }
 
 .bar-button-default {
-  color: #BEBEBE;
+  color: white;
 }
 
 .toolbar-title {
-  color: #BEBEBE;
+  color: white;
 }
 .item {
   background-color:#26231F;
+}
+ion-list .item-inner {
+  border-bottom: 0;
+}
+
+.item-inner {
+  border-bottom: 0;
 }
 
 ion-list[inset] .item {
@@ -52,14 +63,29 @@ ion-list[inset] .item {
 }
 
 .text-input {
-    color:#D44B36;
+    color: #D44B36;
+}
+
+p {
+    color: white;
+}
+
+.button-inner {
+    color: white;
 }
 
 .button {
-    background-color:#26231F;
+    background-color: #D44B36;
 }
-.button-inner{
-    color:#D44B36;
+
+ion-card h2 {
+  margin: 0 0 0 0;
+  color: white;
+}
+
+ion-list-header, ion-item-divider {
+    padding: 10px 10px 10px 10px;
+   border-bottom: 1px solid #484848;
 }
 
 ion-list > .item:last-child, ion-list > ion-item-sliding:last-child .item {
