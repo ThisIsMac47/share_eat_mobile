@@ -29,6 +29,7 @@ export class SearchLocationPage {
 
   chooseLocation(location) {
     this.parent.location = location;
+    this.parent.mealplan = this.price;
     this.nav.pop();
   }
 
