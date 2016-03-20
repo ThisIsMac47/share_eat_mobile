@@ -1,0 +1,33 @@
+<ion-navbar *navbar>
+  <center><img src="img/logo_blank.png" style='width: 30%; height 1%;'></center>
+</ion-navbar>
+
+<ion-content>
+  <form [ngFormModel]="form">
+    <ion-list>
+        <ion-header>
+          <h3> {{meetup.mealplan}} </h3>
+        </ion-header>
+        <ion-item [ngClass]="{invalid: !(number.valid || number.pristine) }">
+            <ion-label stacked-label >Card Number</ion-label>
+            <ion-input type="text" ngControl="number" #number="ngForm"></ion-input>
+         </ion-item>
+        <ion-row>
+            <ion-item [ngClass]="{invalid: !(exp.valid || exp.pristine) }">
+                <ion-label stacked-label >Expiration</ion-label>
+                <ion-input type="text" placeholder="MM/YY" ngControl="exp" #exp="ngForm"></ion-input>
+             </ion-item>
+            <ion-item [ngClass]="{invalid: !(cvc.valid || cvc.pristine) }">
+                <ion-label stacked-label >Security code</ion-label>
+                <ion-input type="number" placeholder="000" ngControl="cvc" #cvc="ngForm"></ion-input>
+             </ion-item>
+        </ion-row>
+
+    </ion-list>
+
+    <div padding>
+        <button primary block (click)="onCheckout();" [disabled]="loading">{{loading ? "Processing..." : "Checkout"}}</button>
+    </div>
+</form>
+
+</ion-content>

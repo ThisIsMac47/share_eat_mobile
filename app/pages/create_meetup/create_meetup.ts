@@ -1,4 +1,5 @@
 import {Page, NavController, NavParams, Alert} from 'ionic-angular';
+import {CheckoutPage} from '../checkout/checkout';
 import {SearchUserPage} from '../search_user/search_user';
 import {SearchLocationPage} from '../search_location/search_location';
 import {HttpService} from '../../providers/http-service';
@@ -44,9 +45,15 @@ export class CreateMeetupPage {
       usersList[i] = this.users[i].id;
     }
 
-    let request = {"invited": usersList, "location": this.location.id, "mealplan" : this.mealplan, "tags" : this.tags, "date": this.event_date, "name" : this.name};
+    let request = {invited: usersList, location: this.location.id, mealplan : this.mealplan, tags : this.tags, date: this.event_date, name : this.name};
     this.http.makeBackendRequest('POST', 'meetup/create/', request, response => {
-        HttpService.showAlert(this.nav, "Meetup created ! ", "The meetup has been successfuly created, all user will receive an invitation", "Ok");
+        request['id'] = response;
+        HttpService.showAlert(this.nav, "One more to go !", "To valide the meetup, you need to pay your meal.", {
+            text: 'Pay',
+            handler: () => {
+              this.nav.push(CheckoutPage, { meetup: request});
+            }
+        });
     }, errorMessage => {
       let code = errorMessage.status;
         HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");

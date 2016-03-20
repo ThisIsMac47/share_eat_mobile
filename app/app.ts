@@ -56,6 +56,9 @@ class MyApp {
       this.pages[3].title = "Connexion";
     });
 
+    // Register payement key
+    if (typeof Stripe !== 'undefined')
+      Stripe.setPublishableKey('pk_test_bZGpr8BL8ew6VjEz7i5Izb8G');
   }
 
   openPage(page) {

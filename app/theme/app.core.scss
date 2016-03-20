@@ -8,6 +8,7 @@
 // App Shared Sass variables belong in app.variables.scss.
 
 @import "../pages/search_location/search_location";
+@import "../pages/checkout/checkout";
 
 .toolbar-background {
   background: #D44B36;
@@ -76,6 +77,14 @@ p {
 
 .button {
     background-color: #D44B36;
+}
+
+.valid {
+  border : 1px solid #2EC95C;
+}
+
+.invalid {
+  border : 1px solid #F00;
 }
 
 ion-card h2 {
