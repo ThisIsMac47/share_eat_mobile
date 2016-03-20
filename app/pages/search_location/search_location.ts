@@ -1,4 +1,4 @@
-import {Page, Modal, NavController, NavParams, Alert} from 'ionic-angular';
+import {Page, Modal, NavController, NavParams, Alert, Keyboard} from 'ionic-angular';
 import {ModalProfile} from '../modal_profile/modal_profile';
 import {Profile} from '../../models/profile';
 
@@ -17,7 +17,6 @@ export class SearchLocationPage {
     searchbarValue = "";
     loading = true;
     parent: any;
-    tmp: any;
     price = null;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
@@ -43,10 +42,9 @@ export class SearchLocationPage {
       this.locations = [];
       // for earch id, get the location
       for(let i = 0; i < response.length; i++) {
-        this.tmp = response[i];
-        this.http.makeBackendRequest('GET', 'location/show/' + response[i], null, response => {
-            let location = response;
-            location.id = this.tmp;
+        this.http.makeBackendRequest('GET', 'location/show/' + response[i], null, res => {
+            let location = res;
+            location.id = response[i];
             this.locations.push(location);
         }, errorMessage => {  }, true);
       }
@@ -57,5 +55,9 @@ export class SearchLocationPage {
 
   }
 
+  handleKeyPress(code) {
+    if (code == 13)
+      this.searchLocation(null);
+  }
 
 }

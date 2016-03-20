@@ -18,7 +18,7 @@ export class Profile {
         this.phone = _.get(json, 'phone', '');
         this.mail = _.get(json, 'mail', '');
         this.school = _.get(json, 'school', '');
-        this.avatar = _.get(json, 'avatar', '../../img/default_avatar.jpg');
+        this.avatar = _.get(json, 'avatar', 'img/default_avatar.jpg');
         this.description = _.get(json, 'description', '');
         this.tags = _.get(json, 'tags', '').length == 0 ? [] : _.split(_.get(json, 'tags', ''), ',');
         this.job = _.get(json, 'job', '');

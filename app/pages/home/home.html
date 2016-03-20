@@ -3,10 +3,10 @@
   <button menuToggle>
     <ion-icon name="menu"></ion-icon>
   </button>
-  <img src="../../img/logo_blank.png" style='max-height: 30px; margin-left: 30%;'>
+  <img src="img/logo_blank.png" style='max-height: 30px; margin-left: 30%;'>
 </ion-navbar>
 
-<ion-pane style='height: 100%; background: url(../../img/background_flou.png) no-repeat center center fixed; background-size: cover;'>
+<ion-pane style='height: 100%; background: url(img/background_flou.png) no-repeat center center fixed; background-size: cover;'>
     <ion-list inset style='width: 95%; position: absolute; bottom: 0; margin-left: 2%;'>
       <ion-item *ngFor="#item of items" (click)="itemTapped($event, item)">
         <ion-icon name="{{item.icon}}" item-left></ion-icon>

@@ -17,7 +17,6 @@ export class SearchUserPage {
     allUsers = Array<Profile>();
     searchbarValue = "";
     loading = true;
-    tmp: any;
     parent: any;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
@@ -35,10 +34,9 @@ export class SearchUserPage {
     response => {
       // for earch id, get the profile
       for(let i = 0; i < response.length; i++) {
-        this.tmp = response[i];
-        this.http.makeBackendRequest('GET', 'profile/show/' + response[i], null, response => {
-            let profile = new Profile(response);
-            profile.id = this.tmp;
+        this.http.makeBackendRequest('GET', 'profile/show/' + response[i], null, res => {
+            let profile = new Profile(res);
+            profile.id = response[i];
             this.allUsers.push(profile);
         }, errorMessage => {  }, true);
       }

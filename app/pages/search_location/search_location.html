@@ -3,13 +3,13 @@
   <button menuToggle *ngIf="!selectedItem">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <img src="../../img/logo_blank.png" style='max-height: 30px; margin-left: 30%;'>
+  <img src="img/logo_blank.png" style='max-height: 30px; margin-left: 30%;'>
 </ion-navbar>
 
-<ion-content style='background: url(../../img/background_slide_4.jpg) no-repeat center center fixed; background-size: cover;'>
+<ion-content style='background: url(img/background_slide_4.jpg) no-repeat center center fixed; background-size: cover;'>
           <ion-pane>
               <div style='marggin-bottom: 30px;' >
-                <ion-searchbar [(ngModel)]="searchbarValue" placeholder="restaurant type (exemple: chinese ..)" cancelButtonText="Search" (cancel)="searchLocation($event)">></ion-searchbar>
+                <ion-searchbar [(ngModel)]="searchbarValue" placeholder="restaurant type (exemple: chinese ..)" (keypress)="handleKeyPress($event.keyCode)"></ion-searchbar>
               </div>
               <center style='margin-top: 10px; margin-bottom: 15px;'>
                 <button [ngClass]="{active: price == 35}" style='width: 28%;' (click)="price=35;"><p>35€</p></button>
