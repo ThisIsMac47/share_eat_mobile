@@ -6,21 +6,30 @@
   <form [ngFormModel]="form">
     <ion-list>
         <ion-header>
-          <h3> {{meetup.mealplan}} </h3>
+          <h3> {{meetup.price}} € </h3>
         </ion-header>
-        <ion-item [ngClass]="{invalid: !(number.valid || number.pristine) }">
+        <ion-item>
             <ion-label stacked-label >Card Number</ion-label>
             <ion-input type="text" ngControl="number" #number="ngForm"></ion-input>
          </ion-item>
+         <p [hidden]="(number.valid || number.pristine)" danger padding-left>
+           You need a valid credit card id
+         </p>
         <ion-row>
             <ion-item [ngClass]="{invalid: !(exp.valid || exp.pristine) }">
                 <ion-label stacked-label >Expiration</ion-label>
                 <ion-input type="text" placeholder="MM/YY" ngControl="exp" #exp="ngForm"></ion-input>
              </ion-item>
+             <p [hidden]="(exp.valid || exp.pristine)" danger padding-left>
+               You need a valid expiration month/year
+             </p>
             <ion-item [ngClass]="{invalid: !(cvc.valid || cvc.pristine) }">
                 <ion-label stacked-label >Security code</ion-label>
                 <ion-input type="number" placeholder="000" ngControl="cvc" #cvc="ngForm"></ion-input>
              </ion-item>
+             <p [hidden]="(cvc.valid || cvc.pristine)" danger padding-left>
+               You need to use a valid security code.
+             </p>
         </ion-row>
 
     </ion-list>

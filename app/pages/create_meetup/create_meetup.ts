@@ -47,21 +47,14 @@ export class CreateMeetupPage {
 
     let request = {invited: usersList, location: this.location.id, mealplan : this.mealplan, tags : this.tags, date: this.event_date, name : this.name};
     this.http.makeBackendRequest('POST', 'meetup/create/', request, response => {
-        request['id'] = response;
-        HttpService.showAlert(this.nav, "One more to go !", "To valide the meetup, you need to pay your meal.", {
-            text: 'Pay',
-            handler: () => {
-              this.nav.push(CheckoutPage, { meetup: request});
-            }
-        });
+        HttpService.showAlert(this.nav, "Meetup successfuly created", "All users will receive an invitation", "Ok");
     }, errorMessage => {
       let code = errorMessage.status;
-        HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+      HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
     }, true);
   }
 
   getTags(searchbar) {
-
     // get user input
     let res = this.searchTags.trim();
     if (res == '') {
