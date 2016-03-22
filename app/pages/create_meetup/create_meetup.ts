@@ -19,7 +19,7 @@ export class CreateMeetupPage {
   // data used to create the meetup
   name: String;
   location = null;
-  mealplan = null;
+  price = null;
   event_date: any;
   users = [];
   tags = [];
@@ -45,7 +45,7 @@ export class CreateMeetupPage {
       usersList[i] = this.users[i].id;
     }
 
-    let request = {invited: usersList, location: this.location.id, mealplan : this.mealplan, tags : this.tags, date: this.event_date, name : this.name};
+    let request = {invited: usersList, location: this.location.id, tags : this.tags, date: this.event_date, name : this.name};
     this.http.makeBackendRequest('POST', 'meetup/create/', request, response => {
         HttpService.showAlert(this.nav, "Meetup successfuly created", "All users will receive an invitation", "Ok");
     }, errorMessage => {

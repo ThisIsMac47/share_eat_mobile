@@ -35,7 +35,6 @@ export class LoginPage {
         request['accessToken'] = '';
         request['loginMethod'] = 'STANDALONE';
 
-        console.log(JSON.stringify(request));
         // make the request
         this.http.makeBackendRequest('POST', 'auth/login', request,
         (response) => {

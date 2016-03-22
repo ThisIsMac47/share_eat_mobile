@@ -1,5 +1,5 @@
 import {Page, NavController, Events, MenuController} from 'ionic-angular';
-import {HomePage} from '../home/home';
+import {SettingsPage} from '../settings/settings';
 import {FormBuilder, Validators, FORM_BINDINGS, ControlGroup} from 'angular2/common'
 
 import {DataService} from '../../providers/data-service';
@@ -33,10 +33,7 @@ export class SignupPage {
   onSignup() {
     if (this.signupForm.valid) {
       // build the request
-      let request = {};
-      request['mail'] = this.signupForm.value.mail;
-      request['password'] = this.signupForm.value.password;
-
+      let request = { mail: this.signupForm.value.username, password: this.signupForm.value.passwords.password};
       // make the request
       this.http.makeBackendRequest('POST', 'auth/register', request,
       (response) => {
@@ -44,10 +41,10 @@ export class SignupPage {
         this.events.publish('user.login', response);
 
         // show alert to inform user and redirect him to Home
-        HttpService.showAlert(this.nav, "Inscription réussi", "Merci d'utiliser notre application, bon networking !", {
+        HttpService.showAlert(this.nav, "Inscription réussi", "Veuillez complétez votre profil dés maintenant !", {
             text: 'Ok',
             handler: () => {
-              this.nav.setRoot(HomePage);
+              this.nav.setRoot(SettingsPage);
             }
         });
       }, (errorMessage) => {
@@ -55,12 +52,8 @@ export class SignupPage {
         let code = errorMessage.status;
         if (typeof code == "undefined")
             HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez.", "Ok");
-        else if (code == 404)
-            HttpService.showAlert(this.nav, "Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
-        else if (code == 500 || code == 502)
-            HttpService.showAlert(this.nav, "Erreur interne", "Nous avons eu un problème, veuillez réessayez.", "Ok");
-        else if (code == 403)
-            HttpService.showAlert(this.nav, "Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
+        else
+            HttpService.showAlert(this.nav, "Erreur code : " + code, "Un problème est survenu.", "Ok");
       }, false);
     }
   }
