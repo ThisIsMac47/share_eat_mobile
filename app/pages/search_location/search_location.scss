@@ -8,6 +8,18 @@ ion-card p.advanced-background-subtitle {
   top: 48%;
   width: 100%;
   color: #fff !important;
+  padding-top: 10px;
+  text-shadow: 1px 1px 10px rgba(150, 150, 150, 1);
+}
+
+ion-card p.advanced-background-subsubtitle {
+  font-size: 1.0em;
+  position: absolute;
+  top: 75%;
+  width: 100%;
+  color: #fff !important;
+  padding-top: 10px;
+  text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
 }
 
 .advanced-background {
@@ -51,13 +63,4 @@ ion-card p.advanced-background-title-large span {
   height: 74px;
   line-height: 1;
   display: inline-block;
-}
-
-.active {
-  background-color: #E3E2E1!important;
-  color: #D44B36 !important;
-}
-
-.active p {
-  color: #D44B36 !important;
 }
