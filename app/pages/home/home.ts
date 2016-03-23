@@ -1,5 +1,6 @@
 import {Page, NavController, NavParams, MenuController} from 'ionic-angular';
 import {CreateMeetupPage} from '../create_meetup/create_meetup';
+import {InvitationPage} from '../invitation/invitation';
 import {HttpService} from '../../providers/http-service';
 import {DataService} from '../../providers/data-service';
 
@@ -17,7 +18,7 @@ export class HomePage {
     this.items = [
       { title: 'Create a dinner', component: CreateMeetupPage, icon: 'beer'},
       { title: 'calendar', component: HomePage, icon: 'bluetooth'},
-      { title: 'pending invite', component: HomePage, icon: 'paper-plane'}
+      { title: 'Invitations', component: InvitationPage, icon: 'paper-plane'}
     ];
 
     http.makeBackendRequest('GET', 'me/tags', null, response => {

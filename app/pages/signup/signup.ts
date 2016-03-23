@@ -57,9 +57,4 @@ export class SignupPage {
       }, false);
     }
   }
-
-    onPageDidEnter() {
-      this.menu.enable(false);
-      this.menu.swipeEnable(false);
-    }
 }

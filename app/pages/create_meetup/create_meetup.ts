@@ -15,7 +15,7 @@ export class CreateMeetupPage {
   suggests = [];
   allTags = ["Startup", "Entrepreneur", "Finance", "Partager", "Gastronomie"];
   searchingTags = true;
-  searchTags = "";
+  searchValue = "";
   // data used to create the meetup
   name: String;
   location = null;
@@ -28,6 +28,7 @@ export class CreateMeetupPage {
       this.http = http;
       this.data = data;
   		this.nav = nav;
+
       data.get('tags').then((data) => {
          if (data) {
            this.allTags = JSON.parse(data);
@@ -56,7 +57,7 @@ export class CreateMeetupPage {
 
   getTags(searchbar) {
     // get user input
-    let res = this.searchTags.trim();
+    let res = this.searchValue.trim();
     if (res == '') {
       this.suggests = [];
       return;
@@ -77,7 +78,6 @@ export class CreateMeetupPage {
       this.tags.push(item);
     // reset search bar and suggestions
     this.suggests = [];
-    this.searchTags = '';
     // update if we search more tags or not
     if (this.tags.length >= 5)
         this.searchingTags = false;

@@ -54,8 +54,6 @@ export class LoginPage {
               HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
           else if (code == 404)
               HttpService.showAlert(this.nav, "Erreur d'Authentification", "Aucun utilisateur trouvé pour cet email.", "Ok");
-          else if (code == 502 || code == 500)
-              HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
           else if (code == 403)
               HttpService.showAlert(this.nav, "Erreur d'Authentification", "Le mot-de-passe est incorrect.", "Ok");
         }, false);
@@ -64,11 +62,6 @@ export class LoginPage {
 
   onSignup() {
     this.nav.push(SignupPage);
-  }
-
-  onPageDidEnter() {
-    this.menu.enable(false);
-    this.menu.swipeEnable(false);
   }
 
 }

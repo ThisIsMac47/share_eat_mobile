@@ -56,12 +56,7 @@ export class CheckoutPage {
                 this.nav.popToRoot();
             }, errorMessage => {
               let code = errorMessage.status;
-              if (typeof code == "undefined")
-                  HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-              else if (code == "500")
-                  HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-              else
-                  HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+              HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
             }, true);
           }
       });

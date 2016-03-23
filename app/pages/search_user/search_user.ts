@@ -16,7 +16,7 @@ export class SearchUserPage {
     users = Array<Profile>();
     allUsers = Array<Profile>();
     searchbarValue = "";
-    loading = true;
+    loading = false;
     parent: any;
 
  	constructor(public nav: NavController, navParams: NavParams, public http: HttpService) {
@@ -30,6 +30,7 @@ export class SearchUserPage {
 
   getUsersFromTags(tags) {
     let request = {'tags' : tags};
+    this.loading = true;
     this.http.makeBackendRequest('POST', 'search/user/tags', request,
     response => {
       // for earch id, get the profile
@@ -40,12 +41,11 @@ export class SearchUserPage {
             this.allUsers.push(profile);
         }, errorMessage => {  }, true);
       }
+        this.loading = false;
     }, errorMessage => {
       let code = errorMessage.status;
-      if (typeof code == "undefined")
-          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-      else if (code == "500")
-          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+      this.loading = false;
+      HttpService.showAlert(this.nav, "Error code : " + errorMessage.status, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
     }, true);
   }
 

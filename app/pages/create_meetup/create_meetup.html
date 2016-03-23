@@ -32,7 +32,8 @@
         </ion-list>
       </center>
 
-      <ion-searchbar [hidden]="!searchingTags" style='width: 70%; margin: auto;' [(ngModel)]="searchTags" (input)="getTags($event)" placeholder="Choose tags"></ion-searchbar>
+      <ion-searchbar [hidden]="!searchingTags" style='width: 70%; margin: auto;' [(ngModel)]="searchValue" (input)="getTags($event)" placeholder="Choose tags"></ion-searchbar>
+
       <ion-list no-lines style='margin:0 0 0 0;'>
         <ion-item *ngFor="#suggest of suggests"  (click)="tagsChoosen($event, suggest)">
            {{ suggest }}

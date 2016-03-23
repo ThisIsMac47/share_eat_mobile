@@ -12,10 +12,9 @@ import {HttpService} from '../../providers/http-service';
 
 export class SearchLocationPage {
 
-
     locations = Array<Profile>();
     searchbarValue = "";
-    loading = true;
+    loading = false;
     parent: any;
     price = null;
 
@@ -32,10 +31,17 @@ export class SearchLocationPage {
   }
 
   searchLocation(event) {
+    if (this.price == null) {
+        HttpService.showAlert(this.nav, "Error", "Please choose at least a price for the restaurent", "Ok");
+        return;
+    }
+
     // get user input
     let res = this.searchbarValue;
     if (res.length == 0)
         res = "none";
+
+    this.loading = true;
     this.http.makeBackendRequest('GET', 'search/location/' + this.price + '/' + res, null,
     response => {
       this.locations = [];
@@ -47,8 +53,10 @@ export class SearchLocationPage {
             this.locations.push(location);
         }, errorMessage => {  }, true);
       }
+      this.loading = false;
     }, errorMessage => {
       let code = errorMessage.status;
+        this.loading = false;
         HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
     }, true);
 

@@ -6,6 +6,11 @@
   <img src="img/logo_blank.png" style='max-height: 30px; margin-left: 30%;'>
 </ion-navbar>
 
+<div class="container" [ngClass]="{'busy': loading}">
+    <center><h1 style='color:white;'>Loading ...</h1></center>
+    <div class="backdrop"></div>
+</div>
+
 <ion-content style='background: url(img/background_slide_4.jpg) no-repeat center center fixed; background-size: cover;'>
           <ion-pane>
               <div style='marggin-bottom: 30px;' >
