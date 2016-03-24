@@ -1,0 +1,34 @@
+<ion-navbar *navbar>
+  <ion-buttons start>
+    <button (click)="dismiss()">Close</button>
+  </ion-buttons>
+  <ion-title>Meetup</ion-title>
+</ion-navbar>
+
+<ion-content padding>
+        <center>
+          <ion-label><h2> {{ invitation.meetup.name }} </h2></ion-label>
+          <ion-card style='margin: 0 0 0 0; max-width: 300px;' class="advanced-background">
+            <img src="{{ invitation.meetup.location.img }}">
+            <p class="advanced-background-title"> {{ invitation.meetup.location.name }}</p>
+            <p class="advanced-background-subtitle">{{ invitation.meetup.location.type }}</p>
+          </ion-card>
+        </center>
+            <ion-list inset>
+        <ion-item>
+          <ion-label> The {{ invitation.meetup.date }} with {{ invitation.meetup.users.length}} users</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <center>
+            <ion-label> Tags of diner </ion-label>
+            <ion-list style='padding:0 15px 5px 15px;'>
+              <button small *ngFor="#tag of invitation.meetup.tags"> {{ tag }} </button>
+            </ion-list>
+          </center>
+        </ion-item>
+
+
+    </ion-list>
+  <button danger full (click)="invit();">Invit him</button>
+</ion-content>

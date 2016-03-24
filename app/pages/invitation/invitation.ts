@@ -1,5 +1,6 @@
-import {IonicApp, Page, NavController, Events, MenuController} from 'ionic-angular';
+import {IonicApp, Page, NavController, Events, MenuController, Modal} from 'ionic-angular';
 import {HomePage} from '../home/home';
+import {ModalMeetup} from '../modal_meetup/modal_meetup';
 import * as _ from 'lodash';
 
 import {HttpService} from '../../providers/http-service';
@@ -45,6 +46,7 @@ export class InvitationPage {
         this.http.makeBackendRequest('GET', 'meetup/show/' + response[i].meetup, null, res => {
             tmp[i].meetup = res;
             tmp[i].meetup.date = _.replace(tmp[i].meetup.date, 'T', ' at ');
+            tmp[i].meetup.tags = _.split(tmp[i].meetup.tags, ',');
             this.http.makeBackendRequest('GET', 'location/show/' + res.location.id, null, re => {
                 tmp[i].meetup.location = re;
                 this.waitingInvitations.push(tmp[i]);
@@ -58,5 +60,12 @@ export class InvitationPage {
     }, true);
   }
 
+  openInvitation(invitation) {
+    let modal = Modal.create(ModalMeetup, { 'meetup' : invitation } );
+    this.nav.present(modal);
+    modal.onDismiss(result => {
+
+   });
+  }
 
 }

@@ -14,7 +14,7 @@
         <center>
           <h2 style='color:white; padding-bottom: 10px;'> {{ stats.received }} invitation received </h2>
 
-          <ion-card style='margin: 0 0 0 0; max-width: 250px;' class="advanced-background" *ngFor="#invitation of waitingInvitations">
+          <ion-card style='margin: 0 0 0 0; max-width: 250px;' class="advanced-background" *ngFor="#invitation of waitingInvitations" (click)="openInvitation(invitation);">
             <img style='max-height:150px;' src="{{ invitation.meetup.location.img }}">
             <p class="advanced-background-title"> {{ invitation.meetup.name}}</p>
             <p class="advanced-background-subtitle">At '{{ invitation.meetup.location.name}}' for {{ invitation.meetup.location.price }} €</p>
