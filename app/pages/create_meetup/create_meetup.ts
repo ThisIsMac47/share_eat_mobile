@@ -48,7 +48,12 @@ export class CreateMeetupPage {
 
     let request = {invited: usersList, location: this.location.id, tags : this.tags, date: this.event_date, name : this.name};
     this.http.makeBackendRequest('POST', 'meetup/create/', request, response => {
-        HttpService.showAlert(this.nav, "Meetup successfuly created", "All users will receive an invitation", "Ok");
+        HttpService.showAlert(this.nav, "Meetup successfuly created", "All users will receive an invitation", {
+            text: 'Ok',
+            handler: () => {
+              this.nav.popToRoot();
+            }
+        });
     }, errorMessage => {
       let code = errorMessage.status;
       HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");

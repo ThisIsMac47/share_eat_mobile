@@ -17,9 +17,9 @@
                 <ion-searchbar [(ngModel)]="searchbarValue" placeholder="restaurant type (exemple: chinese ..)" (keypress)="handleKeyPress($event.keyCode)"></ion-searchbar>
               </div>
               <center style='margin-top: 10px; margin-bottom: 15px;'>
-                <button [ngClass]="{active: price == 35}" style='width: 28%;' (click)="price=35;"><p>35€</p></button>
-                <button [ngClass]="{active: price == 45}" style='width: 28%;' (click)="price=45;"><p>45€</p></button>
-                <button [ngClass]="{active: price == 55}" style='width: 28%;' (click)="price=55;"><p>55€</p></button>
+                <button [ngClass]="{active: price == 35}" style='width: 28%;' (click)="price=35;"><p>$$</p></button>
+                <button [ngClass]="{active: price == 45}" style='width: 28%;' (click)="price=45;"><p>$$$</p></button>
+                <button [ngClass]="{active: price == 55}" style='width: 28%;' (click)="price=55;"><p>$$$$</p></button>
               </center>
           </ion-pane>
           <ion-card style='margin: 0 0 0 0;' class="advanced-background" *ngFor="#location of locations">

@@ -52,11 +52,25 @@ export class CheckoutPage {
             let request = { id: this.meetup.id, token : response.id}
             this.http.makeBackendRequest('POST', 'meetup/payement', request,
             response => {
-                HttpService.showAlert(this.nav, "Its all good !", "All invitations has been sent, you can cancel the meetup in 'My meetups'", "Ok");
-                this.nav.popToRoot();
+                HttpService.showAlert(this.nav, "Its all good !", "Your presence has been confirmed ! Thanks you", {
+                    text: 'Ok',
+                    handler: () => {
+                        this.nav.popToRoot();
+                    }
+                });
             }, errorMessage => {
-              let code = errorMessage.status;
-              HttpService.showAlert(this.nav, "Error code : " + code, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+              // BECAUSE WHY NOT
+              if (Object.keys(errorMessage).length == 0) {
+                HttpService.showAlert(this.nav, "Its all good !", "Your presence has been confirmed ! Thanks you", {
+                    text: 'Ok',
+                    handler: () => {
+                        this.nav.popToRoot();
+                    }
+                });
+              }
+              else {
+                HttpService.showAlert(this.nav, "Error code : " + errorMessage.status, "We got an internal problem, please retry.", "Ok");
+              }
             }, true);
           }
       });

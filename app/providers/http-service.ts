@@ -71,9 +71,9 @@ export class HttpService {
                       console.log("response got : " + JSON.stringify(response));
                       successCallback(response);
                     },
-                     (errorMessage) => {
-                       console.log("got an error : " + JSON.stringify(errorMessage));
-                       errorCallback(errorMessage);
+                     (err) => {
+                       console.log("got an error : " + JSON.stringify(err));
+                       errorCallback(err);
                      });
 
     }

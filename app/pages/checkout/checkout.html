@@ -2,11 +2,10 @@
   <center><img src="img/logo_blank.png" style='width: 30%; height 1%;'></center>
 </ion-navbar>
 
-<ion-content>
+<ion-content style='height: 100%; background: url(img/background_flou.png) no-repeat center center fixed; background-size: cover;'>
   <form [ngFormModel]="form">
-    <ion-list>
         <ion-header>
-          <h3> {{meetup.price}} € </h3>
+          <center><h2> 10 € </h2></center>
         </ion-header>
         <ion-item>
             <ion-label stacked-label >Card Number</ion-label>
@@ -15,28 +14,24 @@
          <p [hidden]="(number.valid || number.pristine)" danger padding-left>
            You need a valid credit card id
          </p>
-        <ion-row>
-            <ion-item [ngClass]="{invalid: !(exp.valid || exp.pristine) }">
+            <ion-item>
                 <ion-label stacked-label >Expiration</ion-label>
                 <ion-input type="text" placeholder="MM/YY" ngControl="exp" #exp="ngForm"></ion-input>
              </ion-item>
              <p [hidden]="(exp.valid || exp.pristine)" danger padding-left>
                You need a valid expiration month/year
              </p>
-            <ion-item [ngClass]="{invalid: !(cvc.valid || cvc.pristine) }">
+            <ion-item>
                 <ion-label stacked-label >Security code</ion-label>
                 <ion-input type="number" placeholder="000" ngControl="cvc" #cvc="ngForm"></ion-input>
              </ion-item>
              <p [hidden]="(cvc.valid || cvc.pristine)" danger padding-left>
                You need to use a valid security code.
              </p>
-        </ion-row>
-
-    </ion-list>
+  </form>
 
     <div padding>
         <button primary block (click)="onCheckout();" [disabled]="loading">{{loading ? "Processing..." : "Checkout"}}</button>
     </div>
-</form>
 
 </ion-content>

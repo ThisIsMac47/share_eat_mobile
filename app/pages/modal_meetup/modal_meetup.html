@@ -19,16 +19,15 @@
           <ion-label> The {{ invitation.meetup.date }} with {{ invitation.meetup.users.length}} users</ion-label>
         </ion-item>
 
-        <ion-item>
-          <center>
-            <ion-label> Tags of diner </ion-label>
-            <ion-list style='padding:0 15px 5px 15px;'>
-              <button small *ngFor="#tag of invitation.meetup.tags"> {{ tag }} </button>
-            </ion-list>
-          </center>
-        </ion-item>
-
-
+      <center>
+        <ion-label> Tags of diner </ion-label>
+        <button small *ngFor="#tag of invitation.meetup.tags"> {{ tag }} </button>
+      </center>
+    <ion-item>
+    </ion-item>
     </ion-list>
-  <button danger full (click)="invit();">Invit him</button>
+    <ion-row *ngIf="needresponse == true">
+        <button (click)="accept()" style="margin-right: +10px;" primary block>Accept</button>
+        <button (click)="refuse()" light block>Refuse</button>
+    </ion-row>
 </ion-content>
