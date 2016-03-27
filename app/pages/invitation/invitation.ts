@@ -68,12 +68,12 @@ export class InvitationPage {
       tmp = response;
       for(let i = 0; i < response.length; i++) {
 
-        this.http.makeBackendRequest('GET', 'meetup/show/' + response[i].meetup, null, res => {
-            tmp[i].meetup = res;
-            tmp[i].meetup.date = _.replace(tmp[i].meetup.date, 'T', ' at ');
-            tmp[i].meetup.tags = _.split(tmp[i].meetup.tags, ',');
+        this.http.makeBackendRequest('GET', 'meetup/show/' + response[i], null, res => {
+            tmp[i] = res;
+            tmp[i].date = _.replace(tmp[i].date, 'T', ' at ');
+            tmp[i].tags = _.split(tmp[i].tags, ',');
             this.http.makeBackendRequest('GET', 'location/show/' + res.location.id, null, re => {
-                tmp[i].meetup.location = re;
+                tmp[i].location = re;
                 this.futureMeetups.push(tmp[i]);
                 this.loading = false;
             }, errorMessage => {  }, true);
@@ -92,7 +92,8 @@ export class InvitationPage {
   }
 
   openMeetup(invitation) {
-    let modal = Modal.create(ModalMeetup, { 'meetup' : invitation, needresponse : false} );
+    let object = { 'meetup' : invitation, 'fake': 0};
+    let modal = Modal.create(ModalMeetup, { 'meetup' : object, needresponse : false} );
     this.nav.present(modal);
   }
 

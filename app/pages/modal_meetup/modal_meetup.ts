@@ -15,6 +15,7 @@ export class ModalMeetup {
    this.view = viewCtrl;
    this.invitation = params.get('meetup');
    this.needresponse = params.get('needresponse');
+   console.log(JSON.stringify(this.invitation));
  }
 
  dismiss() {

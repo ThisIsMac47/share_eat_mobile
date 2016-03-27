@@ -14,7 +14,7 @@
         <center>
           <h2 style='color:white; padding-bottom: 10px;'> {{ stats.received }} invitation received </h2>
 
-          <ion-card style='margin: 0 0 0 0; max-width: 250px;' class="advanced-background" *ngFor="#invitation of waitingInvitations" (click)="openInvitationForResponse(invitation);">
+          <ion-card style='margin: 0 0 0 0' class="advanced-background" *ngFor="#invitation of waitingInvitations" (click)="openInvitationForResponse(invitation);">
             <img style='max-height:150px;' src="{{ invitation.meetup.location.img }}">
             <p class="advanced-background-title"> {{ invitation.meetup.name}}</p>
             <p class="advanced-background-subtitle">At '{{ invitation.meetup.location.name}}' for {{ invitation.meetup.location.price }} €</p>
@@ -24,19 +24,19 @@
         </center>
       </ion-item>
 
-      <ion-item style='background-color: rgba(255, 255, 255, 0); box-shadow: 0 0 0 0;'>
-        <center><h2 style='color:white;'> {{ stats.sent }} invitation sent </h2></center>
-
-        <ion-card style='margin: 0 0 0 0; max-width: 250px;' class="advanced-background" *ngFor="#invitation of futureMeetups" (click)="openInvitationForResponse(invitation);">
-          <img style='max-height:150px;' src="{{ invitation.meetup.location.img }}">
-          <p class="advanced-background-title"> {{ invitation.meetup.name}}</p>
-          <p class="advanced-background-subtitle">At '{{ invitation.meetup.location.name}}' for {{ invitation.meetup.location.price }} €</p>
-          <p class="advanced-background-subsubtitle">The {{ invitation.meetup.date}} </p>
-        </ion-card>
-      </ion-item>
 
       <ion-item style='background-color: rgba(255, 255, 255, 0); box-shadow: 0 0 0 0;'>
         <center><h2 style='color:white;'> {{ stats.futur }} meetup soon </h2></center>
+        <ion-card style='margin: 0 0 0 0;' class="advanced-background" *ngFor="#invitation of futureMeetups" (click)="openMeetup(invitation);">
+            <img style='max-height:150px;' src="{{ invitation.location.img }}">
+            <p class="advanced-background-title"> {{ invitation.name}}</p>
+            <p class="advanced-background-subtitle">At '{{ invitation.location.name}}' for {{ invitation.location.price }} €</p>
+            <p class="advanced-background-subsubtitle">The {{ invitation.date}} </p>
+          </ion-card>
+      </ion-item>
+
+      <ion-item style='background-color: rgba(255, 255, 255, 0); box-shadow: 0 0 0 0;'>
+          <center><h2 style='color:white;'> {{ stats.sent }} invitation sent </h2></center>
       </ion-item>
 
     </ion-list>
