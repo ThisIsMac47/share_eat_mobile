@@ -31,10 +31,11 @@ class MyApp {
       { title: 'Connexion', component: LoginPage, icon: 'log-in'},
     ];
 
+
     // get if user is logged, go the home, if not show login page OR tutorial
     data.get('isLogged').then((isLogged) => {
       if (!isLogged) {
-          data.get('hasDoneTutorial').then((done) => {
+          data.get('done_tutorial').then((done) => {
           if (!done)
             app.getComponent('nav').setRoot(TutorialPage);
           else

@@ -21,6 +21,7 @@ export class SettingsPage {
   searchTags = "";
   searchbar: any;
   suggests: String[];
+  loading = true;
 
   constructor(public nav: NavController, public data: DataService, public http: HttpService, formBuilder: FormBuilder) {
     this.http = http;
@@ -49,6 +50,7 @@ export class SettingsPage {
      data.get('user.profile').then((data) => {
         if (data) {
           this.profile = new Profile(JSON.parse(data));
+          this.loading = false;
           if (this.profile.tags.length < 5) {
              this.searchingTags = true;
           }
@@ -63,12 +65,10 @@ export class SettingsPage {
     this.http.makeBackendRequest('GET', 'me/profile', null, (response) => {
       this.data.set("user.profile", JSON.stringify(response));
       this.profile = new Profile(response);
+      this.loading = false;
     }, errorMessage => {
-      let code = errorMessage.status;
-      if (typeof code == "undefined")
-          HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-      else
-          HttpService.showAlert(this.nav, "Un problème est survenu", "Nous avons eu un problème dans l'execution de votre demande.", "Ok");
+        HttpService.showAlert(this.nav, "Error code : " + errorMessage.status, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+        this.loading = false;
     }, true);
   }
 
@@ -100,11 +100,7 @@ export class SettingsPage {
         this.data.set("user.profile", JSON.stringify(request));
         this.profile = new Profile(request);
       }, errorMessage => {
-        let code = errorMessage.status;
-        if (typeof code == "undefined")
-            HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
-        else if (code == "500")
-            HttpService.showAlert(this.nav, "Serveur non-accessible", "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
+          HttpService.showAlert(this.nav, "Error code : " + errorMessage.status, "Notre serveur n'a pas répondu, veuillez réessayez", "Ok");
       }, true);
   }
 
