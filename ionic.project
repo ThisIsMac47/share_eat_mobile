@@ -1,4 +1,10 @@
 {
   "name": "share_eat_mobile",
-  "app_id": ""
+  "app_id": "9e97e877",
+  "proxies": [
+    {
+      "path": "api/",
+      "proxyUrl": "http://shareeat.vmarchaud.fr:8080/"
+    }
+  ]
 }

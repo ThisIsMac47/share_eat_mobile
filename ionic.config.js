@@ -1,5 +1,10 @@
 module.exports = {
-  proxies: null,
+  "proxies": [
+    {
+      "path": "api/",
+      "proxyUrl": "http://shareeat.vmarchaud.fr:8080/"
+    }
+  ],
 
   paths: {
     html : {
